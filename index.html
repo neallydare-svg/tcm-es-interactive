@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>量化中医 · 交互式论文导读</title>
+<title>量化中医 · TCM-ES</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#fbfbfd;--ink:#1d1d1f;--ink-soft:#6e6e73;--line:rgba(0,0,0,.08);
@@ -164,8 +167,8 @@
   .es-stage{position:relative;}
   /* 关键:固定画布显示高度，避免 width:100% 导致按比例放大 */
   #cvES{cursor:grab;background:transparent;height:580px;}
-  #cvDiag{height:240px;}#cvMatch{height:360px;}#cvNet{height:440px;}#cvSyn{height:360px;}#cvKG{height:520px;}
-  @media(max-width:760px){#cvES{height:460px;}#cvKG{height:440px;}}
+  #cvDiag{height:240px;}#cvMatch{height:360px;}
+  @media(max-width:760px){#cvES{height:460px;}}
   #cvES:active{cursor:grabbing;}
   .es-legend{position:absolute;top:14px;left:18px;display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:rgba(255,255,255,.78);pointer-events:none;}
   .es-legend i{width:11px;height:11px;border-radius:50%;display:inline-block;margin-right:5px;vertical-align:-1px;box-shadow:0 0 9px currentColor;}
@@ -216,6 +219,123 @@
   .honesty b{color:#0a4da3;font-weight:600;}
   .honesty .tag-real{display:inline-block;font-size:11px;font-weight:600;color:#fff;background:#11998e;padding:1px 8px;border-radius:20px;}
   .honesty .tag-ill{display:inline-block;font-size:11px;font-weight:600;color:#fff;background:#ff8008;padding:1px 8px;border-radius:20px;}
+
+  /* ============================================================
+     IGLOO-INSPIRED DARK / MONO RE-SKIN  (IBM Plex Mono · near-black · bronze)
+     ============================================================ */
+  :root{
+    --bg:#070809; --bg2:#0c0e11; --ink:#e2e7f1; --ink-soft:#737886; --ink-dim:#4c515c;
+    --line:rgba(226,231,241,.10); --line-soft:rgba(226,231,241,.055);
+    --card:rgba(226,231,241,.025); --shadow:none;
+    --accent:#cda05e;
+    --tcm:#cda05e;--tcm2:#cda05e;--bio:#cda05e;--bio2:#cda05e;--blue:#cda05e;
+    --warm:#ff7a5c;--cold:#4aa8ff;--neu:#36cf86;
+  }
+  body{font-family:"IBM Plex Mono","IBM Plex Sans SC",ui-monospace,"Microsoft YaHei",monospace;
+    background:var(--bg);color:var(--ink);letter-spacing:0;line-height:1.65;
+    background-image:radial-gradient(1100px 640px at 50% -6%, rgba(120,150,210,.055), transparent 62%);
+    background-attachment:fixed;}
+  ::selection{background:var(--accent);color:#0a0b0d;}
+  section{border-top:1px solid var(--line-soft);}
+  #hero{border-top:none;}
+
+  #progress{background:var(--accent);height:2px;}
+  nav{background:rgba(7,8,9,.74);border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(16px);-webkit-backdrop-filter:saturate(140%) blur(16px);font-size:12px;letter-spacing:.05em;text-transform:uppercase;}
+  nav a{color:var(--ink);opacity:.5;}
+  nav a:hover{opacity:1;color:var(--accent);}
+  nav .brand{font-weight:500;letter-spacing:.07em;color:var(--ink);text-transform:uppercase;}
+  .lang-toggle{background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:2px;text-transform:none;font-weight:500;}
+  .lang-toggle:hover{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+
+  .eyebrow{text-transform:uppercase;letter-spacing:.2em;font-size:11.5px;font-weight:500;color:var(--accent);-webkit-text-fill-color:var(--accent);}
+  h2{font-weight:500;letter-spacing:-.005em;color:var(--ink);}
+  h3{font-weight:500;color:var(--ink);}
+  p.lead{color:var(--ink-soft);font-weight:300;}
+  b,strong{color:var(--ink);font-weight:500;}
+
+  #hero h1{font-weight:500;letter-spacing:-.015em;}
+  #hero h1 .grad{-webkit-text-fill-color:var(--accent);color:var(--accent);}
+  #hero .sub{color:var(--ink-soft);font-weight:300;}
+  #hero .meta{color:var(--ink-soft);} #hero .meta b{color:var(--ink);}
+  #hero .pill{background:var(--card);border:1px solid var(--line);box-shadow:none;border-radius:2px;color:var(--ink-soft);font-size:12px;}
+  .mesh{opacity:.55;filter:blur(95px);}
+  .blob{mix-blend-mode:screen;opacity:.5;}
+  .b1{background:radial-gradient(circle,rgba(78,120,182,.5),transparent 65%);}
+  .b2{background:radial-gradient(circle,rgba(205,160,94,.26),transparent 65%);}
+  .b3{background:radial-gradient(circle,rgba(58,88,140,.46),transparent 65%);}
+  .scroll-cue{color:var(--ink-dim);text-transform:uppercase;letter-spacing:.12em;font-size:11px;}
+  .scroll-cue .dot{border-color:var(--ink-dim);} .scroll-cue .dot::after{background:var(--ink-dim);}
+
+  .path{background:var(--card);border:1px solid var(--line);box-shadow:none;border-radius:6px;}
+  .path .tag{border-radius:2px;background:transparent!important;border:1px solid var(--line);color:var(--ink-soft);font-weight:500;letter-spacing:.04em;text-transform:uppercase;}
+  .path .chain span{background:rgba(226,231,241,.04);border:1px solid var(--line-soft);border-radius:3px;color:var(--ink);}
+  .path .chain i{color:var(--accent);}
+
+  .demo,.demo.dark{background:var(--bg2);border:1px solid var(--line);box-shadow:none;border-radius:8px;}
+  .demo .demohead,.demo.dark .demohead{background:transparent;border-bottom:1px solid var(--line);}
+  .demo .demohead .t,.demo.dark .demohead .t{color:var(--ink);font-weight:500;letter-spacing:.02em;}
+  .demo .demohead .hint,.demo.dark .demohead .hint{color:var(--ink-soft);}
+  .demo .badge{background:transparent;border:1px solid var(--accent);color:var(--accent);border-radius:2px;font-weight:500;}
+  .ctrls{background:transparent;border-top:1px solid var(--line);}
+  .btn{background:transparent;color:var(--ink-soft);border:1px solid var(--line);border-radius:3px;}
+  .btn:hover{color:var(--ink);border-color:var(--ink-soft);transform:none;}
+  .btn.on{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+  .legend{color:var(--ink-soft);}
+
+  .symgroup .gt{color:var(--ink-soft);text-transform:uppercase;letter-spacing:.09em;}
+  .chip{background:transparent;border:1px solid var(--line);color:var(--ink-soft);border-radius:3px;}
+  .chip:hover{border-color:var(--ink-soft);color:var(--ink);}
+  .verdict .syn{color:var(--ink);} .verdict .syn small{color:var(--ink-soft);}
+  .hrow .nm{color:var(--ink);} .hrow .bar{background:rgba(226,231,241,.08);}
+  .hrow .bar span{background:var(--accent);} .hrow .nat{color:var(--ink-soft);}
+
+  .ro .k{color:var(--ink-soft);text-transform:uppercase;letter-spacing:.07em;font-size:11px;}
+  .ro .v{-webkit-text-fill-color:var(--accent);color:var(--accent);font-weight:500;}
+  .eq{background:rgba(205,160,94,.07);color:#d8b070;border:1px solid rgba(205,160,94,.18);border-radius:4px;}
+
+  .stat{background:var(--card);border:1px solid var(--line);box-shadow:none;border-radius:6px;}
+  .stat .num{-webkit-text-fill-color:var(--accent);color:var(--accent);font-weight:500;}
+  .stat .lab{color:var(--ink-soft);}
+
+  .card{background:var(--card);border:1px solid var(--line);box-shadow:none;border-radius:6px;}
+  .card:hover{transform:translateY(-3px);box-shadow:none;border-color:rgba(226,231,241,.2);}
+  .card .ic{background:transparent;border:1px solid var(--line);color:var(--accent);border-radius:6px;}
+  .card.alt .ic{background:transparent;color:var(--accent);}
+  .card p{color:var(--ink-soft);}
+  .card .pval{color:var(--accent);background:rgba(205,160,94,.08);border:1px solid rgba(205,160,94,.16);border-radius:3px;}
+
+  .ti{background:var(--card);border:1px solid var(--line);box-shadow:none;border-radius:6px;}
+  .ti .n{background:transparent;border:1px solid var(--accent);color:var(--accent);}
+  .ti p{color:var(--ink-soft);}
+  .quote{color:var(--ink);font-weight:400;}
+  .quote .grad{-webkit-text-fill-color:var(--accent);color:var(--accent);}
+
+  footer{background:transparent;border-top:1px solid var(--line);}
+  footer .ttl{color:var(--ink);font-weight:500;}
+  footer .auth,footer .aff,footer .copy{color:var(--ink-soft);}
+  footer a.cta{background:var(--accent);color:#0a0b0d;border-radius:3px;font-weight:500;}
+  footer a.cta.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);}
+
+  .note{background:rgba(226,231,241,.03);border:1px solid var(--line-soft);color:var(--ink-soft);border-radius:4px;}
+  .note b{color:var(--ink);}
+  .honesty{background:rgba(205,160,94,.05);border:1px solid rgba(205,160,94,.16);color:var(--ink-soft);border-radius:6px;}
+  .honesty b{color:var(--ink);}
+  .honesty .tag-real{background:var(--neu);color:#04140c;border-radius:2px;}
+  .honesty .tag-ill{background:var(--accent);color:#140d04;border-radius:2px;}
+
+  .lp-box,.lp-box.enc,.lp-box.z,.lp-box.dec{background:var(--card);border:1px solid var(--line);box-shadow:none;border-radius:6px;color:var(--ink);font-weight:500;}
+  .lp-box small{color:var(--ink-soft);} .lp-box.z{border-color:rgba(205,160,94,.3);}
+  .lp-arrow{color:var(--ink-dim);}
+  .ln-foot{background:transparent;border-top:1px solid var(--line);}
+  .ln-read b{color:var(--accent);}
+
+  .es-toolbar{background:transparent;border-top:1px solid var(--line);}
+  .es-btn{background:transparent;border:1px solid var(--line);color:var(--ink-soft);border-radius:3px;}
+  .es-btn:hover{background:rgba(226,231,241,.06);color:var(--ink);transform:none;}
+  .es-btn.on{background:var(--ink);border-color:var(--ink);color:var(--bg);box-shadow:none;}
+  .es-search input{background:rgba(226,231,241,.04);border:1px solid var(--line);color:var(--ink);border-radius:3px;}
+  .es-search input:focus{border-color:var(--accent);background:rgba(205,160,94,.06);}
+  .es-info{background:rgba(12,14,17,.9);border:1px solid var(--line);border-radius:8px;}
 </style>
 </head>
 <body>
@@ -228,9 +348,6 @@
   <a href="#explorer" data-en="Space">嵌入空间</a>
   <a href="#diagnose" data-en="Diagnosis">辨证论治</a>
   <a href="#efficacy" data-en="Efficacy">方证·疗效</a>
-  <a href="#synergy" data-en="Synergy">药对协同</a>
-  <a href="#network" data-en="Diseases">疾病网络</a>
-  <a href="#kg" data-en="Graph">知识图谱</a>
   <a href="#future" data-en="Outlook">展望</a>
   <button id="langToggle" class="lang-toggle">中文</button>
 </nav>
@@ -282,7 +399,7 @@
 </section>
 
 <!-- 核心机制：对比学习实时演化 -->
-<section id="learn" style="background:linear-gradient(180deg,#fff,#f3faf7);">
+<section id="learn">
   <div class="wrap">
     <div class="eyebrow reveal" data-en="Core mechanism　How contrastive learning &ldquo;grows&rdquo; the map">核心机制　对比学习如何"长出"这张星图</div>
     <h2 class="reveal d1" data-en="Watch the embedding space<br>self-organise out of chaos.">看嵌入空间,<br>从混沌中自我组织。</h2>
@@ -323,7 +440,7 @@
 </section>
 
 <!-- 交互1：嵌入空间 -->
-<section id="explorer" style="background:linear-gradient(180deg,#fff,#f5fbf8);">
+<section id="explorer">
   <div class="wrap">
     <div class="eyebrow reveal" data-en="Interactive ①　The TCM embedding space (TCM-ES)">交互 ①　TCM 嵌入空间 (TCM-ES)</div>
     <h2 class="reveal d1" data-en="All of TCM,<br>packed into one rotatable star map.">整个中医,<br>被装进一张可旋转的星图。</h2>
@@ -394,7 +511,7 @@
 </section>
 
 <!-- 交互3：方证匹配 → 疗效函数 -->
-<section id="efficacy" style="background:linear-gradient(180deg,#f7f7fb,#fff);">
+<section id="efficacy">
   <div class="wrap">
     <div class="eyebrow reveal" data-en="Interactive ③　Formula–syndrome match = a function of distance">交互 ③　方证匹配 = 距离的函数</div>
     <h2 class="reveal d1" data-en="Drag the formula toward the patient,<br>watch the efficacy curve respond.">拖动处方靠近病情,<br>看疗效曲线实时变化。</h2>
@@ -425,33 +542,6 @@
   </div>
 </section>
 
-<!-- 交互6：药对协同 / 拮抗 -->
-<section id="synergy">
-  <div class="wrap">
-    <div class="eyebrow reveal" data-en="Interactive ⑤　The secret of herb pairing: synergy or antagonism">交互 ⑤　配伍的秘密:协同还是拮抗</div>
-    <h2 class="reveal d1" data-en="Two herbs together —<br>is it 1+1&gt;2, or do they cancel out?">两味药合用,<br>是 1+1&gt;2 还是互相抵消?</h2>
-    <p class="lead reveal d2" data-en="TCM prizes &ldquo;herb pairing.&rdquo; The paper quantifies it by distance: if the <b>herb-pair</b> sits closer to the target symptom than the two <b>single herbs</b>, that&rsquo;s <b>synergy</b>; farther means <b>antagonism</b>. Drag the purple &ldquo;pair&rdquo; point — move it toward the symptom and the verdict flips to synergy.">中医讲究"配伍"。论文用空间距离量化了这一点:若<b>药对</b>比两味<b>单药</b>更靠近目标症状,即为<b>协同增效</b>;更远则<b>拮抗</b>。拖动紫色"药对"点试试——靠近症状,右侧判定就翻成协同。</p>
-    <div class="demo reveal d2">
-      <div class="demohead">
-        <div><div class="t" data-en="⚗️ Herb-pair combinatorial effect">⚗️ 药对组合效应</div><div class="hint" data-en="Drag the “pair” point · who is closer to the symptom?">拖动"药对"点 · 看它与单药谁更近症状</div></div>
-        <span class="badge" data-en="Interactive">可交互</span>
-      </div>
-      <div class="m3">
-        <div class="pl"><div class="canvas-host"><canvas id="cvSyn" height="360"></canvas></div></div>
-        <div class="pr">
-          <div class="readout">
-            <div class="ro"><div class="k" data-en="Mean single-herb dist → symptom">单药均距 → 症状</div><div class="v" id="synInd" style="background:linear-gradient(120deg,#8a8a8e,#b9b9be);-webkit-background-clip:text;background-clip:text;">–</div></div>
-            <div class="ro"><div class="k" data-en="Pair dist → symptom">药对距 → 症状</div><div class="v" id="synPair">–</div></div>
-          </div>
-          <div id="synVerdict" style="font-size:26px;font-weight:700;letter-spacing:-.01em;" data-en="Drag the pair point →">拖动药对点 →</div>
-          <div class="eq" id="synEq" data-en="Δ = mean single − pair　·　Δ&gt;0 synergy / Δ&lt;0 antagonism">Δ = 单药均距 − 药对距　·　Δ&gt;0 协同 / Δ&lt;0 拮抗</div>
-          <p class="muted" style="font-size:13px;margin-top:14px;" data-en="Reproduces the paper&rsquo;s Fig. 3g: the distance gap (single vs. pair to the symptom) correlates negatively with the clinical efficacy gap — closer to the symptom, stronger the synergy.">复现论文图 3g:药对与单药到症状的距离差,与其临床疗效差呈负相关——越靠近症状,增效越明显。</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- 临床验证统计 -->
 <section id="validate">
   <div class="wrap">
@@ -472,58 +562,8 @@
   </div>
 </section>
 
-<!-- 交互4：疾病网络 -->
-<section id="network" style="background:linear-gradient(180deg,#fff,#fff7ef);">
-  <div class="wrap">
-    <div class="eyebrow reveal" data-en="Interactive ④　Hidden disease links from a TCM viewpoint">交互 ④　从中医视角发现疾病的隐藏联系</div>
-    <h2 class="reveal d1" data-en="A draggable disease-relationship network.">一张可拖动的疾病关系网络。</h2>
-    <p class="lead reveal d2" data-en="Edges link 79 diseases by their embedding: <b>grey</b> = known (shared genes/symptoms), <b>red</b> = <b>latent links</b> surfaced from a TCM viewpoint (yet supported by modern biology, e.g. neurodegeneration ↔ retinal degeneration). <b>Drag nodes, click a disease</b> to see its neighbours.">基于嵌入空间为 79 种疾病连边:<b>灰边</b>=已知(共享基因/症状),<b>红边</b>=中医视角发现的<b>潜在联系</b>(却有现代生物学佐证,如神经退行 ↔ 视网膜退行)。<b>拖动节点、点击疾病</b>查看近邻。</p>
-    <div class="demo reveal d2">
-      <div class="demohead">
-        <div><div class="t" data-en="🕸️ Disease-relationship network">🕸️ 疾病关系网络</div><div class="hint" data-en="Drag nodes · click to highlight neighbours · hover to inspect">拖动节点 · 点击高亮近邻 · 悬停查看</div></div>
-        <span class="badge" data-en="Interactive">可交互</span>
-      </div>
-      <div class="canvas-host"><canvas id="cvNet" height="440"></canvas></div>
-      <div class="ctrls">
-        <div class="legend">
-          <span><span style="display:inline-block;width:18px;height:2px;background:#b9b9be;vertical-align:3px;margin-right:5px;"></span><span data-en="Known link">已知关联</span></span>
-          <span><span style="display:inline-block;width:18px;height:2px;background:#ff3b30;vertical-align:3px;margin-right:5px;"></span><span data-en="Latent link (TCM-found)">潜在关联(TCM 发现)</span></span>
-        </div>
-        <span style="flex:1"></span>
-        <button class="btn sm" id="netReset" data-en="Reset layout">重置布局</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 交互5：知识图谱放射图 -->
-<section id="kg">
-  <div class="wrap">
-    <div class="eyebrow reveal" data-en="Interactive ⑥　Application: a graph that predicts new therapies">交互 ⑥　应用:一张图谱预测新疗法</div>
-    <h2 class="reveal d1" data-en="Centred on Rheumatoid Arthritis,<br>radiating four classes of candidate therapy.">以类风湿关节炎为中心,<br>辐射出四类候选疗法。</h2>
-    <p class="lead reveal d2" data-en="From the embedding space, each disease is linked to its nearest <b>targets, repurposable drugs, herbal compounds, and herbs/formulas</b>. Below uses <b>Rheumatoid Arthritis (RA)</b> as the example; items marked ✓ are predictions already supported by literature — <b>hover for the evidence</b>.">基于嵌入空间,为每种疾病连接最近的<b>靶点、可重定位药物、草药化合物、草药/方剂</b>四类候选。下图以<b>类风湿关节炎 (RA)</b> 为例,带 ✓ 的是已有文献佐证的预测——<b>悬停查看证据</b>。</p>
-    <div class="demo reveal d2">
-      <div class="demohead">
-        <div><div class="t" data-en="🕸️ TCM knowledge graph · RA predictions">🕸️ TCM 知识图谱 · RA 预测</div><div class="hint" data-en="Hover a node for its rank and literature evidence">悬停节点查看排名与文献证据</div></div>
-        <span class="badge" data-en="Interactive">可交互</span>
-      </div>
-      <div class="canvas-host"><canvas id="cvKG" height="520"></canvas></div>
-      <div class="ctrls">
-        <div class="legend">
-          <span><i style="background:#3a9bff"></i><span data-en="Targets">靶点</span></span>
-          <span><i style="background:#f0a93b"></i><span data-en="Drugs (repurpose)">药物(重定位)</span></span>
-          <span><i style="background:#7b61ff"></i><span data-en="Compounds">草药化合物</span></span>
-          <span><i style="background:#2bbf7a"></i><span data-en="Herbs/Formulas">草药/方剂</span></span>
-          <span data-en="✓ = supported by literature">✓ = 已有文献佐证</span>
-        </div>
-      </div>
-    </div>
-    <div class="note reveal" data-en="The model also separates RA&rsquo;s Cold/Heat subtypes: with <b>fine-grained TCM symptoms</b>, anti-inflammatory drugs like ibuprofen move significantly closer to the &ldquo;Heat-type RA&rdquo; — pointing toward precision medicine.">模型还自动区分了 RA 的"寒型/热型"两个亚型:改用<b>精细中医症状</b>描述后,布洛芬等抗炎药与"热型 RA"显著拉近——指向精准医学。</div>
-  </div>
-</section>
-
 <!-- 展望 -->
-<section id="future" style="background:linear-gradient(180deg,#f5f7ff,#fff);">
+<section id="future">
   <div class="wrap">
     <div class="eyebrow reveal" data-en="Significance & outlook">意义与展望</div>
     <h2 class="reveal d1" data-en="A quantitative foundation for<br>standardising and modernising TCM.">为中医的标准化与现代化,<br>打下量化地基。</h2>
@@ -951,8 +991,8 @@ function rot3(p,yaw,pitch){
         ctx.lineWidth=i===0?2:1;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(hp.x,hp.y);ctx.stroke();
         ctx.fillStyle=o.h.color;ctx.beginPath();ctx.arc(hp.x,hp.y,i===0?6:5,0,7);ctx.fill();});
       // 证点
-      ctx.fillStyle='#1d1d1f';ctx.beginPath();ctx.arc(p.x,p.y,7,0,7);ctx.fill();
-      ctx.fillStyle='#fff';ctx.font='600 10px sans-serif';ctx.textAlign='center';ctx.fillText(L('证','z'),p.x,p.y+3.5);ctx.textAlign='left';
+      ctx.fillStyle='#cda05e';ctx.beginPath();ctx.arc(p.x,p.y,7.5,0,7);ctx.fill();
+      ctx.fillStyle='#0a0b0d';ctx.font='600 10px sans-serif';ctx.textAlign='center';ctx.fillText(L('证','z'),p.x,p.y+3.5);ctx.textAlign='left';
     }
   }
   cv._onresize=draw;draw();
@@ -982,47 +1022,47 @@ function rot3(p,yaw,pitch){
     ctx.fillStyle='rgba(255,90,97,.6)';ctx.fillText(L('热','Heat'),toPx({x:1.08,y:0}).x,toPx({x:1.08,y:0}).y);
     ctx.fillStyle='rgba(240,169,59,.7)';ctx.fillText(L('虚','Def.'),toPx({x:0,y:1.1}).x-4,toPx({x:0,y:1.1}).y);
     // 云
-    cloud.forEach(c=>{const p=toPx(c);ctx.globalAlpha=.16;ctx.fillStyle='#0071e3';
+    cloud.forEach(c=>{const p=toPx(c);ctx.globalAlpha=.22;ctx.fillStyle='#5a78b4';
       ctx.beginPath();ctx.arc(p.x,p.y,2.5,0,7);ctx.fill();});
     ctx.globalAlpha=1;
     const pp=toPx(patient),pr=toPx(rx);
     // 连线
-    ctx.strokeStyle='rgba(255,128,8,.8)';ctx.lineWidth=2;ctx.setLineDash([5,4]);
+    ctx.strokeStyle='rgba(205,160,94,.85)';ctx.lineWidth=2;ctx.setLineDash([5,4]);
     ctx.beginPath();ctx.moveTo(pp.x,pp.y);ctx.lineTo(pr.x,pr.y);ctx.stroke();ctx.setLineDash([]);
     // 距离标签
     const mid={x:(pp.x+pr.x)/2,y:(pp.y+pr.y)/2};
-    ctx.fillStyle='#ff8008';ctx.font='600 12px sans-serif';ctx.fillText('d='+dist().toFixed(2),mid.x+6,mid.y-6);
+    ctx.fillStyle='#cda05e';ctx.font='600 12px sans-serif';ctx.fillText('d='+dist().toFixed(2),mid.x+6,mid.y-6);
     // 患者
-    ctx.fillStyle='#0071e3';ctx.fillRect(pp.x-9,pp.y-9,18,18);
-    ctx.fillStyle='#fff';ctx.font='600 11px sans-serif';ctx.textAlign='center';ctx.fillText(L('病','Pt'),pp.x,pp.y+4);
+    ctx.fillStyle='#4aa8ff';ctx.fillRect(pp.x-9,pp.y-9,18,18);
+    ctx.fillStyle='#06080c';ctx.font='600 11px sans-serif';ctx.textAlign='center';ctx.fillText(L('病','Pt'),pp.x,pp.y+4);
     // 处方
-    ctx.save();ctx.translate(pr.x,pr.y);ctx.rotate(Math.PI/4);ctx.fillStyle='#ff8008';ctx.fillRect(-10,-10,20,20);ctx.restore();
-    ctx.fillStyle='#fff';ctx.fillText(L('方','Rx'),pr.x,pr.y+4);ctx.textAlign='left';
+    ctx.save();ctx.translate(pr.x,pr.y);ctx.rotate(Math.PI/4);ctx.fillStyle='#cda05e';ctx.fillRect(-10,-10,20,20);ctx.restore();
+    ctx.fillStyle='#0a0b0d';ctx.fillText(L('方','Rx'),pr.x,pr.y+4);ctx.textAlign='left';
     // 提示
-    ctx.fillStyle='rgba(0,0,0,.3)';ctx.font='12px sans-serif';ctx.fillText(L('← 拖动橙色处方点','← drag the formula'),pr.x+18,pr.y+4);
+    ctx.fillStyle='rgba(226,231,241,.4)';ctx.font='12px sans-serif';ctx.fillText(L('← 拖动处方点','← drag the formula'),pr.x+18,pr.y+4);
     drawCurve();
   }
   // 右侧小函数图(画在主canvas右上角内嵌? 用独立绘制在右侧 readout 通过DOM). 这里改为在主图右下角画曲线缩略
   function drawCurve(){
     const w=cv._w,h=cv._h;const cw=Math.min(190,w*0.42),ch=92;
     const ox=w-cw-14,oy=h-ch-14;
-    ctx.fillStyle='rgba(255,255,255,.92)';ctx.strokeStyle='rgba(0,0,0,.1)';
-    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(ox,oy,cw,ch,10);ctx.fill();ctx.stroke();}
+    ctx.fillStyle='rgba(12,14,17,.92)';ctx.strokeStyle='rgba(226,231,241,.14)';
+    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(ox,oy,cw,ch,8);ctx.fill();ctx.stroke();}
     else{ctx.fillRect(ox,oy,cw,ch);ctx.strokeRect(ox,oy,cw,ch);}
     const pad=10;const gx=ox+pad,gy=oy+pad,gw=cw-pad*2,gh=ch-pad*2-8;
     // 轴
-    ctx.strokeStyle='rgba(0,0,0,.15)';ctx.beginPath();ctx.moveTo(gx,gy);ctx.lineTo(gx,gy+gh);ctx.lineTo(gx+gw,gy+gh);ctx.stroke();
+    ctx.strokeStyle='rgba(226,231,241,.2)';ctx.beginPath();ctx.moveTo(gx,gy);ctx.lineTo(gx,gy+gh);ctx.lineTo(gx+gw,gy+gh);ctx.stroke();
     // 曲线 d:0..1.4
-    ctx.strokeStyle='#11998e';ctx.lineWidth=2;ctx.beginPath();
+    ctx.strokeStyle='#36cf86';ctx.lineWidth=2;ctx.beginPath();
     for(let i=0;i<=40;i++){const d=i/40*1.4;const yv=eff(d)/IMAX;
       const px=gx+(d/1.4)*gw, py=gy+gh-yv*gh;if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);}
     ctx.stroke();
     // 当前点
     const d=Math.min(dist(),1.4);const yv=eff(d)/IMAX;
     const px=gx+(d/1.4)*gw,py=gy+gh-yv*gh;
-    ctx.fillStyle='#ff8008';ctx.beginPath();ctx.arc(px,py,4.5,0,7);ctx.fill();
-    ctx.strokeStyle='rgba(255,128,8,.4)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(px,gy+gh);ctx.lineTo(px,py);ctx.stroke();
-    ctx.fillStyle='rgba(0,0,0,.4)';ctx.font='10px sans-serif';ctx.fillText(L('距离','dist.'),gx+gw-28,gy+gh+9);ctx.fillText(L('改善','impr.'),gx-2,gy-2);
+    ctx.fillStyle='#cda05e';ctx.beginPath();ctx.arc(px,py,4.5,0,7);ctx.fill();
+    ctx.strokeStyle='rgba(205,160,94,.45)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(px,gy+gh);ctx.lineTo(px,py);ctx.stroke();
+    ctx.fillStyle='rgba(226,231,241,.42)';ctx.font='10px sans-serif';ctx.fillText(L('距离','dist.'),gx+gw-28,gy+gh+9);ctx.fillText(L('改善','impr.'),gx-2,gy-2);
   }
   function refresh(){
     document.getElementById('roDist').textContent=dist().toFixed(2);
@@ -1050,243 +1090,6 @@ function rot3(p,yaw,pitch){
     refresh();
   }));
   refresh();
-})();
-
-/* ============ 交互④:疾病关系网络 ============ */
-(function(){
-  const cv=document.getElementById('cvNet');const ctx=setup(cv);
-  // 颜色按 MeSH 大类
-  const CAT={神经:'#7b61ff',视网膜:'#ff8a3d',心血管:'#ff5a7a',神经系统:'#12b3a6',胃肠:'#3a9bff'};
-  const N=[
-    ['肌萎缩侧索硬化','神经','ALS'],['帕金森病','神经',"Parkinson's"],
-    ['黄斑变性','视网膜','Macular degen.'],['视网膜色素变性','视网膜','Retinitis pigm.'],['视网膜退行','视网膜','Retinal degen.'],
-    ['心律失常','心血管','Arrhythmia'],['心肌病','心血管','Cardiomyopathy'],['冠状动脉病','心血管','Coronary art.'],['心肌缺血','心血管','Myocard. isch.'],
-    ['周围神经病','神经系统','Periph. neuropathy'],['小脑共济失调','神经系统','Cerebellar ataxia'],['运动障碍','神经系统','Dyskinesia'],
-    ['溃疡性结肠炎','胃肠','Ulcer. colitis'],['胃肠病','胃肠','GI disease'],
-  ].map((d,i)=>({name:d[0],cat:d[1],en:d[2],color:CAT[d[1]],
-    x:cv._w/2+Math.cos(i)*120+(hash(d[0])-.5)*40, y:cv._h/2+Math.sin(i*1.7)*90+(hash(d[0]+'y')-.5)*40,
-    vx:0,vy:0,pin:false}));
-  const idx={};N.forEach((n,i)=>idx[n.name]=i);
-  // 边: [a,b,latent]
-  const E=[
-    ['肌萎缩侧索硬化','帕金森病',false],['黄斑变性','视网膜色素变性',false],['黄斑变性','视网膜退行',false],
-    ['视网膜色素变性','视网膜退行',false],['心律失常','心肌病',false],['心肌病','冠状动脉病',false],
-    ['冠状动脉病','心肌缺血',false],['心律失常','心肌缺血',false],['周围神经病','小脑共济失调',false],
-    ['小脑共济失调','运动障碍',false],['周围神经病','运动障碍',false],['溃疡性结肠炎','胃肠病',false],
-    // 潜在(红)
-    ['肌萎缩侧索硬化','黄斑变性',true],['帕金森病','视网膜退行',true],
-    ['心律失常','周围神经病',true],['心肌病','小脑共济失调',true],['运动障碍','帕金森病',true],
-  ].map(e=>({a:idx[e[0]],b:idx[e[1]],latent:e[2]}));
-  let hover=-1,sel=-1,dragI=-1;
-  function step(){
-    for(let i=0;i<N.length;i++){for(let j=i+1;j<N.length;j++){
-      const a=N[i],b=N[j];let dx=a.x-b.x,dy=a.y-b.y;let d=Math.hypot(dx,dy)||1;
-      const f=2400/(d*d);dx/=d;dy/=d;a.vx+=dx*f;a.vy+=dy*f;b.vx-=dx*f;b.vy-=dy*f;}}
-    E.forEach(e=>{const a=N[e.a],b=N[e.b];let dx=b.x-a.x,dy=b.y-a.y;let d=Math.hypot(dx,dy)||1;
-      const f=(d-95)*0.012;dx/=d;dy/=d;a.vx+=dx*f;a.vy+=dy*f;b.vx-=dx*f;b.vy-=dy*f;});
-    const cx=cv._w/2,cy=cv._h/2;
-    N.forEach((n,i)=>{n.vx+=(cx-n.x)*0.002;n.vy+=(cy-n.y)*0.002;
-      if(i===dragI||n.pin)return;n.vx*=0.82;n.vy*=0.82;n.x+=n.vx;n.y+=n.vy;
-      n.x=Math.max(40,Math.min(cv._w-40,n.x));n.y=Math.max(30,Math.min(cv._h-30,n.y));});
-  }
-  function draw(){
-    const w=cv._w,h=cv._h;ctx.clearRect(0,0,w,h);
-    E.forEach(e=>{const a=N[e.a],b=N[e.b];
-      const act=sel>=0&&(e.a===sel||e.b===sel);
-      ctx.strokeStyle=e.latent?(act?'#ff3b30':'rgba(255,59,48,.5)'):(act?'#8a8a8e':'rgba(185,185,190,.55)');
-      ctx.lineWidth=e.latent?(act?2.4:1.6):(act?2:1);
-      ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();});
-    N.forEach((n,i)=>{
-      const act=sel<0||i===sel|| E.some(e=>(e.a===sel&&e.b===i)||(e.b===sel&&e.a===i));
-      ctx.globalAlpha=act?1:0.3;
-      ctx.fillStyle=n.color;ctx.beginPath();ctx.arc(n.x,n.y,i===hover||i===sel?11:8,0,7);ctx.fill();
-      if(i===sel){ctx.strokeStyle='#1d1d1f';ctx.lineWidth=2;ctx.stroke();}
-      ctx.globalAlpha=act?1:0.45;
-      ctx.fillStyle='#1d1d1f';ctx.font=(i===hover||i===sel?'600 ':'')+'12px sans-serif';
-      ctx.textAlign='center';ctx.fillText(L(n.name,n.en),n.x,n.y-13);ctx.textAlign='left';
-    });
-    ctx.globalAlpha=1;
-  }
-  function loop(){step();draw();requestAnimationFrame(loop);}
-  // 预热
-  for(let k=0;k<120;k++)step();
-  loop();cv._onresize=()=>{};
-  function pos(ev){const r=cv.getBoundingClientRect();const t=ev.touches?ev.touches[0]:ev;return {x:t.clientX-r.left,y:t.clientY-r.top};}
-  function pick(p){let best=-1,bd=16;N.forEach((n,i)=>{const d=Math.hypot(n.x-p.x,n.y-p.y);if(d<bd){bd=d;best=i;}});return best;}
-  cv.addEventListener('pointerdown',e=>{const p=pos(e);const i=pick(p);if(i>=0){dragI=i;N[i].pin=true;sel=(sel===i?-1:i);cv.setPointerCapture(e.pointerId);}else{sel=-1;}});
-  cv.addEventListener('pointermove',e=>{const p=pos(e);
-    if(dragI>=0){N[dragI].x=p.x;N[dragI].y=p.y;N[dragI].vx=0;N[dragI].vy=0;}
-    else{const i=pick(p);hover=i;cv.style.cursor=i>=0?'pointer':'default';}});
-  cv.addEventListener('pointerup',()=>{if(dragI>=0)N[dragI].pin=false;dragI=-1;});
-  cv.addEventListener('pointerleave',()=>{hover=-1;});
-  document.getElementById('netReset').addEventListener('click',()=>{
-    N.forEach((n,i)=>{n.x=cv._w/2+Math.cos(i)*120;n.y=cv._h/2+Math.sin(i*1.7)*90;n.vx=0;n.vy=0;n.pin=false;});sel=-1;});
-})();
-
-/* ============ 交互⑤:药对协同 / 拮抗 ============ */
-(function(){
-  const cv=document.getElementById('cvSyn');const ctx=setup(cv);
-  // 归一空间 [-1.3,1.3]^2 ; 症状固定，两单药固定，药对可拖
-  const S={x:0,y:0.85};            // 目标症状(上方)
-  const HA={x:-0.7,y:-0.2};        // 单药A
-  const HB={x:0.7,y:-0.2};         // 单药B
-  let PAIR={x:0,y:-0.45};          // 药对(可拖)
-  let dragP=false;
-  function toPx(p){const pad=36,w=cv._w-pad*2,h=cv._h-pad*2;return {x:pad+(p.x+1.3)/2.6*w,y:pad+(1.3-p.y)/2.6*h};}
-  const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
-  function metrics(){
-    const dA=dist(S,HA),dB=dist(S,HB),dInd=(dA+dB)/2,dPair=dist(S,PAIR);
-    return {dInd,dPair,delta:dInd-dPair};
-  }
-  function draw(){
-    const w=cv._w,h=cv._h;ctx.clearRect(0,0,w,h);
-    const sp=toPx(S),ap=toPx(HA),bp=toPx(HB),pp=toPx(PAIR);
-    const m=metrics();
-    const syn=m.delta>0.02, ant=m.delta<-0.02;
-    // 协同/拮抗背景晕染(以症状为中心的环)
-    const g=ctx.createRadialGradient(sp.x,sp.y,10,sp.x,sp.y,Math.max(w,h)*0.6);
-    g.addColorStop(0, syn?'rgba(43,191,122,.14)':ant?'rgba(255,90,97,.12)':'rgba(0,0,0,.03)');
-    g.addColorStop(1,'rgba(255,255,255,0)');ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
-    // 单药到症状(灰虚线)
-    ctx.setLineDash([5,4]);ctx.strokeStyle='rgba(140,140,150,.7)';ctx.lineWidth=1.5;
-    [ap,bp].forEach(p=>{ctx.beginPath();ctx.moveTo(sp.x,sp.y);ctx.lineTo(p.x,p.y);ctx.stroke();});
-    ctx.setLineDash([]);
-    // 药对到症状(实线，按协同/拮抗着色)
-    ctx.strokeStyle=syn?'#2bbf7a':ant?'#ff5a61':'#8a8a8e';ctx.lineWidth=2.6;
-    ctx.beginPath();ctx.moveTo(sp.x,sp.y);ctx.lineTo(pp.x,pp.y);ctx.stroke();
-    // 节点
-    function node(p,color,label,big){ctx.fillStyle=color;ctx.beginPath();ctx.arc(p.x,p.y,big?13:10,0,7);ctx.fill();
-      ctx.fillStyle='#fff';ctx.font='600 11px sans-serif';ctx.textAlign='center';ctx.fillText(label,p.x,p.y+4);ctx.textAlign='left';}
-    // 症状(红方块)
-    ctx.fillStyle='#ff5a8a';ctx.fillRect(sp.x-13,sp.y-13,26,26);ctx.fillStyle='#fff';ctx.font='600 11px sans-serif';ctx.textAlign='center';ctx.fillText(L('症状','Sym'),sp.x,sp.y+4);ctx.textAlign='left';
-    node(ap,'#3a9bff',L('药A','A'));node(bp,'#3a9bff',L('药B','B'));
-    node(pp,'#7b61ff',L('药对','A+B'),true);
-    ctx.fillStyle='rgba(0,0,0,.3)';ctx.font='12px sans-serif';ctx.fillText(L('↕ 拖动药对','↕ drag pair'),pp.x+18,pp.y+4);
-    // 文本
-    document.getElementById('synInd').textContent=m.dInd.toFixed(2);
-    document.getElementById('synPair').textContent=m.dPair.toFixed(2);
-    const vd=document.getElementById('synVerdict');
-    if(syn){vd.textContent=L('✓ 协同增效 (1+1>2)','✓ Synergy (1+1>2)');vd.style.color='#1a9e63';}
-    else if(ant){vd.textContent=L('✗ 相互拮抗 (1+1<2)','✗ Antagonism (1+1<2)');vd.style.color='#e03b32';}
-    else{vd.textContent=L('— 中性 (无明显增减)','— Neutral (no clear effect)');vd.style.color='#6e6e73';}
-    document.getElementById('synEq').textContent='Δ = '+m.dInd.toFixed(2)+' − '+m.dPair.toFixed(2)+' = '+(m.delta>=0?'+':'')+m.delta.toFixed(2)+'　'+L('(Δ>0 协同 / Δ<0 拮抗)','(Δ>0 synergy / Δ<0 antagonism)');
-  }
-  cv._onresize=draw;
-  function pos(ev){const r=cv.getBoundingClientRect();const t=ev.touches?ev.touches[0]:ev;return {x:t.clientX-r.left,y:t.clientY-r.top};}
-  function nearP(p){const pp=toPx(PAIR);return Math.hypot(pp.x-p.x,pp.y-p.y)<24;}
-  cv.addEventListener('pointerdown',e=>{const p=pos(e);if(nearP(p)){dragP=true;cv.setPointerCapture(e.pointerId);}});
-  cv.addEventListener('pointermove',e=>{const p=pos(e);
-    if(dragP){const pad=36,w=cv._w-pad*2,h=cv._h-pad*2;
-      PAIR.x=Math.max(-1.25,Math.min(1.25,(p.x-pad)/w*2.6-1.3));
-      PAIR.y=Math.max(-1.25,Math.min(1.25,1.3-(p.y-pad)/h*2.6));draw();}
-    else cv.style.cursor=nearP(p)?'grab':'default';});
-  cv.addEventListener('pointerup',()=>dragP=false);
-  draw();
-})();
-
-/* ============ 交互⑥:知识图谱放射图 (RA) ============ */
-(function(){
-  const cv=document.getElementById('cvKG');const ctx=setup(cv);
-  const EV={
-    'BTRC':'靶点 rank3 · z=-3.20 ｜ 调控 IκB/NF-κB,RA 中已验证(miR-10a 靶向)',
-    'MC1R':'靶点 rank4 · z=-2.78 ｜ 对 RA、纤维化、神经炎症有治疗潜力',
-    'Arbutin 熊果苷':'药物 rank3 · z=-1.95 ｜ 原用于皮肤病;可减轻 CFA 诱导的大鼠关节炎',
-    'Selenomethionine 硒代蛋氨酸':'化合物 rank1 · z=-3.30 ｜ 桑寄生活性成分;延缓 RA 发病、降低严重度',
-    '杜仲 Du-Zhong':'草药 rank1 · z=-2.81 ｜ 抗 RA 活性,含桃叶珊瑚苷、松脂醇苷',
-    '独活寄生汤':'方剂 rank2 · z=-2.63 ｜ 减轻关节炎症与软骨退化(KOA 小鼠)',
-  };
-  const EV_EN={
-    'BTRC':'Target rank3 · z=-3.20 ｜ regulates IκB/NF-κB, validated in RA (miR-10a target)',
-    'MC1R':'Target rank4 · z=-2.78 ｜ therapeutic potential in RA, fibrosis, neuroinflammation',
-    'Arbutin 熊果苷':'Drug rank3 · z=-1.95 ｜ originally for skin disease; reduces CFA-induced arthritis in rats',
-    'Selenomethionine 硒代蛋氨酸':'Compound rank1 · z=-3.30 ｜ active ingredient of Sang-Ji-Sheng; delays RA onset & severity',
-    '杜仲 Du-Zhong':'Herb rank1 · z=-2.81 ｜ anti-RA activity; contains aucubin & pinoresinol glucoside',
-    '独活寄生汤':'Formula rank2 · z=-2.63 ｜ reduces joint inflammation & cartilage degradation (KOA mice)',
-  };
-  const ITEM_EN={'Arbutin 熊果苷':'Arbutin','Selenomethionine 硒代蛋氨酸':'Selenomethionine','杜仲 Du-Zhong':'Du-Zhong','独活寄生汤':'Du-Huo-Ji-Sheng-Tang','牛膝':'Niu-Xi','桑寄生':'Sang-Ji-Sheng','威灵仙':'Wei-Ling-Xian','三妙丸':'San-Miao-Wan','阳和汤':'Yang-He-Tang'};
-  const CATS=[
-    {name:'靶点',nameEn:'Targets',color:'#3a9bff',ang:-0.42,items:['BTRC','MC1R','CCR1','IL7R','KCNK18','SELENOK','DUOX2','AVP']},
-    {name:'药物 · 重定位',nameEn:'Drugs · repurpose',color:'#f0a93b',ang:-1.20,items:['Arbutin 熊果苷','Parthenolide','Loratadine','Clindamycin','Mirtazapine','Pizotifen']},
-    {name:'草药化合物',nameEn:'Compounds',color:'#7b61ff',ang:1.20,items:['Selenomethionine 硒代蛋氨酸','Decursinol','Sesamin','Morroniside','Loganin','Senkyunolide']},
-    {name:'草药 / 方剂',nameEn:'Herbs / Formulas',color:'#2bbf7a',ang:0.42,items:['杜仲 Du-Zhong','独活寄生汤','牛膝','桑寄生','威灵仙','三妙丸','阳和汤']},
-  ];
-  // ang 为该类中心方向(弧度，0=右，正向下)。这里用左右两侧布局
-  // 重新指定四象限角度
-  CATS[0].ang=-0.5;          // 靶点 右上
-  CATS[3].ang=0.5;           // 草药 右下
-  CATS[1].ang=-(Math.PI-0.5);// 药物 左上
-  CATS[2].ang=(Math.PI-0.5); // 化合物 左下
-  let prog=0,hover=null;
-  const nodes=[]; // 计算后填充
-  function layout(){
-    nodes.length=0;
-    const cx=cv._w/2,cy=cv._h/2;
-    const R=Math.min(cv._w,cv._h)*0.40;
-    CATS.forEach(cat=>{
-      const n=cat.items.length;const spread=0.95; // 扇形展开
-      cat.items.forEach((it,i)=>{
-        const t=n===1?0:(i/(n-1)-0.5);
-        const a=cat.ang+t*spread;
-        const rr=R*(0.78+ (i%2)*0.16);
-        nodes.push({cat,name:it,a,r:rr,cx,cy,ev:EV[it],evEn:EV_EN[it]});
-      });
-      cat._cx=cx;cat._cy=cy;cat._R=R;
-    });
-  }
-  function draw(){
-    const w=cv._w,h=cv._h;ctx.clearRect(0,0,w,h);
-    const cx=cv._w/2,cy=cv._h/2;
-    // 连线
-    nodes.forEach(nd=>{
-      const x=cx+Math.cos(nd.a)*nd.r*prog, y=cy+Math.sin(nd.a)*nd.r*prog;
-      ctx.strokeStyle=nd.cat.color;ctx.globalAlpha=0.28*prog;ctx.lineWidth=nd===hover?2.4:1.2;
-      ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(x,y);ctx.stroke();ctx.globalAlpha=1;
-      nd._x=x;nd._y=y;
-    });
-    // 类别标签
-    CATS.forEach(cat=>{const lx=cx+Math.cos(cat.ang)*cat._R*1.16*prog, ly=cy+Math.sin(cat.ang)*cat._R*1.16*prog;
-      ctx.globalAlpha=prog;ctx.fillStyle=cat.color;ctx.font='600 13px sans-serif';ctx.textAlign='center';
-      ctx.fillText(L(cat.name,cat.nameEn),lx,ly);ctx.textAlign='left';ctx.globalAlpha=1;});
-    // 节点
-    nodes.forEach(nd=>{
-      const x=nd._x,y=nd._y;const hl=nd===hover;
-      ctx.globalAlpha=prog;
-      ctx.fillStyle=nd.cat.color;ctx.beginPath();ctx.arc(x,y,hl?8:6,0,7);ctx.fill();
-      if(nd.ev){ctx.fillStyle='#fff';ctx.font='700 9px sans-serif';ctx.textAlign='center';ctx.fillText('✓',x,y+3);ctx.textAlign='left';}
-      // 名称(短)
-      const short=LANG==='en'?(ITEM_EN[nd.name]||nd.name.split(' ')[0]):nd.name.split(' ')[0];
-      ctx.fillStyle=hl?'#1d1d1f':'rgba(29,29,31,.62)';ctx.font=(hl?'600 ':'')+'11px sans-serif';
-      const right=Math.cos(nd.a)>=0;ctx.textAlign=right?'left':'right';
-      ctx.fillText(short,x+(right?11:-11),y+3.5);ctx.textAlign='left';
-      ctx.globalAlpha=1;
-    });
-    // 中心疾病
-    ctx.save();
-    const pr=1+0.04*Math.sin(prog*6.28);
-    ctx.fillStyle='#e8453a';ctx.beginPath();ctx.arc(cx,cy,26*pr,0,7);ctx.fill();
-    ctx.fillStyle='rgba(232,69,58,.18)';ctx.beginPath();ctx.arc(cx,cy,40*pr,0,7);ctx.fill();
-    ctx.fillStyle='#fff';ctx.font='600 13px sans-serif';ctx.textAlign='center';
-    if(LANG==='en'){ctx.font='600 12px sans-serif';ctx.fillText('Rheumatoid',cx,cy-2);ctx.fillText('Arthritis',cx,cy+13);}
-    else{ctx.fillText('类风湿',cx,cy-2);ctx.fillText('关节炎',cx,cy+14);}
-    ctx.textAlign='left';
-    ctx.restore();
-    // tooltip
-    if(hover&&hover.ev){const evt=L(hover.ev,hover.evEn);
-      ctx.font='12px sans-serif';const tw=ctx.measureText(evt).width;
-      let tx=hover._x+12,ty=hover._y-14;if(tx+tw+16>w)tx=w-tw-16;if(ty<14)ty=hover._y+22;
-      ctx.fillStyle='rgba(29,29,31,.94)';
-      if(ctx.roundRect){ctx.beginPath();ctx.roundRect(tx-8,ty-16,tw+16,26,8);ctx.fill();}else ctx.fillRect(tx-8,ty-16,tw+16,26);
-      ctx.fillStyle='#fff';ctx.fillText(evt,tx,ty+1);
-    }
-  }
-  function frame(){if(prog<1){prog=Math.min(1,prog+0.025);}draw();if(prog<1)requestAnimationFrame(frame);}
-  cv._onresize=()=>{layout();draw();};
-  layout();frame();
-  function pos(ev){const r=cv.getBoundingClientRect();const t=ev.touches?ev.touches[0]:ev;return {x:t.clientX-r.left,y:t.clientY-r.top};}
-  cv.addEventListener('pointermove',e=>{const p=pos(e);let best=null,bd=15;
-    nodes.forEach(nd=>{const d=Math.hypot(nd._x-p.x,nd._y-p.y);if(d<bd){bd=d;best=nd;}});
-    if(best!==hover){hover=best;cv.style.cursor=best?'pointer':'default';if(prog>=1)draw();}});
-  cv.addEventListener('pointerleave',()=>{hover=null;if(prog>=1)draw();});
 })();
 
 /* ============ 双语:语言切换控制器 ============ */
