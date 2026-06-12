@@ -3,10 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>量化中医 · TCM-ES</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>量化中医 · 交互式论文导读</title>
 <style>
   :root{
     --bg:#fbfbfd;--ink:#1d1d1f;--ink-soft:#6e6e73;--line:rgba(0,0,0,.08);
@@ -167,7 +164,7 @@
   .es-stage{position:relative;}
   /* 关键:固定画布显示高度，避免 width:100% 导致按比例放大 */
   #cvES{cursor:grab;background:transparent;height:580px;}
-  #cvDiag{height:240px;}#cvMatch{height:360px;}
+  #cvDiag{height:240px;}#cvNet{height:440px;}
   @media(max-width:760px){#cvES{height:460px;}}
   #cvES:active{cursor:grabbing;}
   .es-legend{position:absolute;top:14px;left:18px;display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:rgba(255,255,255,.78);pointer-events:none;}
@@ -195,147 +192,12 @@
   .es-search input::placeholder{color:#6b7488;}
   @media(max-width:840px){.es-info{position:static;width:auto;margin:14px 14px 0;}.es-legend{font-size:12px;}}
 
-  /* ===== 对比学习演化模块 ===== */
-  #cvLearn{height:520px;cursor:default;background:transparent;}
-  @media(max-width:760px){#cvLearn{height:440px;}}
-  .ln-pipe{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap;margin-top:36px;}
-  .lp-box{flex:1;min-width:128px;border-radius:16px;padding:16px 14px;text-align:center;border:1px solid var(--line);background:var(--card);box-shadow:var(--shadow);font-weight:600;font-size:15px;}
-  .lp-box small{display:block;font-weight:400;color:var(--ink-soft);font-size:12px;margin-top:4px;}
-  .lp-box.enc{background:linear-gradient(160deg,#fff,#eafff4);}
-  .lp-box.z{background:linear-gradient(160deg,#fff,#eef4ff);border-color:rgba(0,113,227,.3);}
-  .lp-box.dec{background:linear-gradient(160deg,#fff,#fff4e6);}
-  .lp-arrow{display:flex;align-items:center;color:var(--ink-soft);font-size:13px;}
-  @media(max-width:760px){.lp-arrow{transform:rotate(90deg);justify-content:center;}}
-  .ln-foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:15px 22px;border-top:1px solid rgba(255,255,255,.08);background:#0d121b;}
-  .ln-formula{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px;color:#cfd5e2;letter-spacing:.01em;}
-  .ln-formula sub{font-size:10px;}
-  .ln-formula .pos{color:#36cf86;font-weight:600;}.ln-formula .neg{color:#ff7a8f;font-weight:600;}.ln-formula .op{color:#7d869a;font-size:12px;}
-  .ln-read{display:flex;gap:22px;font-size:13px;color:#aeb6c6;white-space:nowrap;}
-  .ln-read b{color:#fff;font-size:19px;font-weight:700;font-variant-numeric:tabular-nums;}
-  #lnSpeed{accent-color:#0a84ff;vertical-align:middle;}
   /* 诚实声明条 */
   .honesty-wrap{padding:30px 24px 0;}
   .honesty{max-width:1080px;margin:0 auto;padding:15px 20px;border-radius:16px;background:rgba(0,113,227,.06);border:1px solid rgba(0,113,227,.16);font-size:13.5px;line-height:1.6;color:#3a526c;}
   .honesty b{color:#0a4da3;font-weight:600;}
   .honesty .tag-real{display:inline-block;font-size:11px;font-weight:600;color:#fff;background:#11998e;padding:1px 8px;border-radius:20px;}
   .honesty .tag-ill{display:inline-block;font-size:11px;font-weight:600;color:#fff;background:#ff8008;padding:1px 8px;border-radius:20px;}
-
-  /* ============================================================
-     IGLOO-INSPIRED DARK / MONO RE-SKIN  (IBM Plex Mono · near-black · bronze)
-     ============================================================ */
-  :root{
-    --bg:#070809; --bg2:#0c0e11; --ink:#e2e7f1; --ink-soft:#737886; --ink-dim:#4c515c;
-    --line:rgba(226,231,241,.10); --line-soft:rgba(226,231,241,.055);
-    --card:rgba(226,231,241,.025); --shadow:none;
-    --accent:#cda05e;
-    --tcm:#cda05e;--tcm2:#cda05e;--bio:#cda05e;--bio2:#cda05e;--blue:#cda05e;
-    --warm:#ff7a5c;--cold:#4aa8ff;--neu:#36cf86;
-  }
-  body{font-family:"IBM Plex Mono","IBM Plex Sans SC",ui-monospace,"Microsoft YaHei",monospace;
-    background:var(--bg);color:var(--ink);letter-spacing:0;line-height:1.65;
-    background-image:radial-gradient(1100px 640px at 50% -6%, rgba(120,150,210,.055), transparent 62%);
-    background-attachment:fixed;}
-  ::selection{background:var(--accent);color:#0a0b0d;}
-  section{border-top:1px solid var(--line-soft);}
-  #hero{border-top:none;}
-
-  #progress{background:var(--accent);height:2px;}
-  nav{background:rgba(7,8,9,.74);border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(16px);-webkit-backdrop-filter:saturate(140%) blur(16px);font-size:12px;letter-spacing:.05em;text-transform:uppercase;}
-  nav a{color:var(--ink);opacity:.5;}
-  nav a:hover{opacity:1;color:var(--accent);}
-  nav .brand{font-weight:500;letter-spacing:.07em;color:var(--ink);text-transform:uppercase;}
-  .lang-toggle{background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:2px;text-transform:none;font-weight:500;}
-  .lang-toggle:hover{background:var(--ink);color:var(--bg);border-color:var(--ink);}
-
-  .eyebrow{text-transform:uppercase;letter-spacing:.2em;font-size:11.5px;font-weight:500;color:var(--accent);-webkit-text-fill-color:var(--accent);}
-  h2{font-weight:500;letter-spacing:-.005em;color:var(--ink);}
-  h3{font-weight:500;color:var(--ink);}
-  p.lead{color:var(--ink-soft);font-weight:300;}
-  b,strong{color:var(--ink);font-weight:500;}
-
-  #hero h1{font-weight:500;letter-spacing:-.015em;}
-  #hero h1 .grad{-webkit-text-fill-color:var(--accent);color:var(--accent);}
-  #hero .sub{color:var(--ink-soft);font-weight:300;}
-  #hero .meta{color:var(--ink-soft);} #hero .meta b{color:var(--ink);}
-  #hero .pill{background:var(--card);border:1px solid var(--line);box-shadow:none;border-radius:2px;color:var(--ink-soft);font-size:12px;}
-  .mesh{opacity:.55;filter:blur(95px);}
-  .blob{mix-blend-mode:screen;opacity:.5;}
-  .b1{background:radial-gradient(circle,rgba(78,120,182,.5),transparent 65%);}
-  .b2{background:radial-gradient(circle,rgba(205,160,94,.26),transparent 65%);}
-  .b3{background:radial-gradient(circle,rgba(58,88,140,.46),transparent 65%);}
-  .scroll-cue{color:var(--ink-dim);text-transform:uppercase;letter-spacing:.12em;font-size:11px;}
-  .scroll-cue .dot{border-color:var(--ink-dim);} .scroll-cue .dot::after{background:var(--ink-dim);}
-
-  .path{background:var(--card);border:1px solid var(--line);box-shadow:none;border-radius:6px;}
-  .path .tag{border-radius:2px;background:transparent!important;border:1px solid var(--line);color:var(--ink-soft);font-weight:500;letter-spacing:.04em;text-transform:uppercase;}
-  .path .chain span{background:rgba(226,231,241,.04);border:1px solid var(--line-soft);border-radius:3px;color:var(--ink);}
-  .path .chain i{color:var(--accent);}
-
-  .demo,.demo.dark{background:var(--bg2);border:1px solid var(--line);box-shadow:none;border-radius:8px;}
-  .demo .demohead,.demo.dark .demohead{background:transparent;border-bottom:1px solid var(--line);}
-  .demo .demohead .t,.demo.dark .demohead .t{color:var(--ink);font-weight:500;letter-spacing:.02em;}
-  .demo .demohead .hint,.demo.dark .demohead .hint{color:var(--ink-soft);}
-  .demo .badge{background:transparent;border:1px solid var(--accent);color:var(--accent);border-radius:2px;font-weight:500;}
-  .ctrls{background:transparent;border-top:1px solid var(--line);}
-  .btn{background:transparent;color:var(--ink-soft);border:1px solid var(--line);border-radius:3px;}
-  .btn:hover{color:var(--ink);border-color:var(--ink-soft);transform:none;}
-  .btn.on{background:var(--ink);color:var(--bg);border-color:var(--ink);}
-  .legend{color:var(--ink-soft);}
-
-  .symgroup .gt{color:var(--ink-soft);text-transform:uppercase;letter-spacing:.09em;}
-  .chip{background:transparent;border:1px solid var(--line);color:var(--ink-soft);border-radius:3px;}
-  .chip:hover{border-color:var(--ink-soft);color:var(--ink);}
-  .verdict .syn{color:var(--ink);} .verdict .syn small{color:var(--ink-soft);}
-  .hrow .nm{color:var(--ink);} .hrow .bar{background:rgba(226,231,241,.08);}
-  .hrow .bar span{background:var(--accent);} .hrow .nat{color:var(--ink-soft);}
-
-  .ro .k{color:var(--ink-soft);text-transform:uppercase;letter-spacing:.07em;font-size:11px;}
-  .ro .v{-webkit-text-fill-color:var(--accent);color:var(--accent);font-weight:500;}
-  .eq{background:rgba(205,160,94,.07);color:#d8b070;border:1px solid rgba(205,160,94,.18);border-radius:4px;}
-
-  .stat{background:var(--card);border:1px solid var(--line);box-shadow:none;border-radius:6px;}
-  .stat .num{-webkit-text-fill-color:var(--accent);color:var(--accent);font-weight:500;}
-  .stat .lab{color:var(--ink-soft);}
-
-  .card{background:var(--card);border:1px solid var(--line);box-shadow:none;border-radius:6px;}
-  .card:hover{transform:translateY(-3px);box-shadow:none;border-color:rgba(226,231,241,.2);}
-  .card .ic{background:transparent;border:1px solid var(--line);color:var(--accent);border-radius:6px;}
-  .card.alt .ic{background:transparent;color:var(--accent);}
-  .card p{color:var(--ink-soft);}
-  .card .pval{color:var(--accent);background:rgba(205,160,94,.08);border:1px solid rgba(205,160,94,.16);border-radius:3px;}
-
-  .ti{background:var(--card);border:1px solid var(--line);box-shadow:none;border-radius:6px;}
-  .ti .n{background:transparent;border:1px solid var(--accent);color:var(--accent);}
-  .ti p{color:var(--ink-soft);}
-  .quote{color:var(--ink);font-weight:400;}
-  .quote .grad{-webkit-text-fill-color:var(--accent);color:var(--accent);}
-
-  footer{background:transparent;border-top:1px solid var(--line);}
-  footer .ttl{color:var(--ink);font-weight:500;}
-  footer .auth,footer .aff,footer .copy{color:var(--ink-soft);}
-  footer a.cta{background:var(--accent);color:#0a0b0d;border-radius:3px;font-weight:500;}
-  footer a.cta.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);}
-
-  .note{background:rgba(226,231,241,.03);border:1px solid var(--line-soft);color:var(--ink-soft);border-radius:4px;}
-  .note b{color:var(--ink);}
-  .honesty{background:rgba(205,160,94,.05);border:1px solid rgba(205,160,94,.16);color:var(--ink-soft);border-radius:6px;}
-  .honesty b{color:var(--ink);}
-  .honesty .tag-real{background:var(--neu);color:#04140c;border-radius:2px;}
-  .honesty .tag-ill{background:var(--accent);color:#140d04;border-radius:2px;}
-
-  .lp-box,.lp-box.enc,.lp-box.z,.lp-box.dec{background:var(--card);border:1px solid var(--line);box-shadow:none;border-radius:6px;color:var(--ink);font-weight:500;}
-  .lp-box small{color:var(--ink-soft);} .lp-box.z{border-color:rgba(205,160,94,.3);}
-  .lp-arrow{color:var(--ink-dim);}
-  .ln-foot{background:transparent;border-top:1px solid var(--line);}
-  .ln-read b{color:var(--accent);}
-
-  .es-toolbar{background:transparent;border-top:1px solid var(--line);}
-  .es-btn{background:transparent;border:1px solid var(--line);color:var(--ink-soft);border-radius:3px;}
-  .es-btn:hover{background:rgba(226,231,241,.06);color:var(--ink);transform:none;}
-  .es-btn.on{background:var(--ink);border-color:var(--ink);color:var(--bg);box-shadow:none;}
-  .es-search input{background:rgba(226,231,241,.04);border:1px solid var(--line);color:var(--ink);border-radius:3px;}
-  .es-search input:focus{border-color:var(--accent);background:rgba(205,160,94,.06);}
-  .es-info{background:rgba(12,14,17,.9);border:1px solid var(--line);border-radius:8px;}
 </style>
 </head>
 <body>
@@ -343,11 +205,11 @@
 <nav>
   <span class="brand" data-en="Quantifying TCM · TCM-ES">量化中医 · TCM-ES</span>
   <a href="#hero" data-en="Home">首页</a>
-  <a href="#paradigm" data-en="Paradigms">两种范式</a>
-  <a href="#learn" data-en="Learning">对比学习</a>
-  <a href="#explorer" data-en="Space">嵌入空间</a>
+  <a href="#paradigm" data-en="Background">背景</a>
   <a href="#diagnose" data-en="Diagnosis">辨证论治</a>
-  <a href="#efficacy" data-en="Efficacy">方证·疗效</a>
+  <a href="#explorer" data-en="Space">嵌入空间</a>
+  <a href="#network" data-en="Diseases">疾病网络</a>
+  <a href="#validate" data-en="Evidence">临床验证</a>
   <a href="#future" data-en="Outlook">展望</a>
   <button id="langToggle" class="lang-toggle">中文</button>
 </nav>
@@ -356,12 +218,12 @@
 <section id="hero">
   <div class="mesh"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
   <div class="inner">
-    <h1 data-en="Making millennia of TCM<br><span class='grad'>precisely computable</span>">让千年中医<br><span class="grad">被精确计算</span></h1>
-    <p class="sub" data-en="An interpretable AI framework that quantifies &ldquo;syndrome differentiation&rdquo; into an interactive mathematical space,<br>bridging Traditional Chinese Medicine and modern biomedicine.">一个可解释的 AI 框架,把"辨证论治"量化为可交互的数学空间,<br>并以此连接中医与现代生物医学。</p>
+    <h1 data-en="Turning TCM&rsquo;s diagnosis &amp; treatment<br><span class='grad'>into a computable space</span>">把中医辨证论治<br><span class="grad">放进一个可计算的空间</span></h1>
+    <p class="sub" data-en="An interactive companion to the TCM-ES paper: an interpretable AI framework that represents symptoms, herbs and formulas as vectors, so the relationships between them can be measured.">这是 TCM-ES 论文的交互式导读:一个可解释的 AI 框架,把症状、草药、方剂表示为向量,让它们之间的关系可被度量。</p>
     <div class="pills">
-      <span class="pill" data-en="🌀 Rotate the embedding space">🌀 拖动旋转嵌入空间</span>
-      <span class="pill" data-en="🧪 Pick symptoms → auto diagnose &amp; prescribe">🧪 勾选症状自动辨证开方</span>
-      <span class="pill" data-en="📈 Drag a formula → live efficacy curve">📈 拖动处方实时演绎疗效函数</span>
+      <span class="pill" data-en="🧪 Pick symptoms → diagnose &amp; prescribe">🧪 勾选症状 → 辨证开方</span>
+      <span class="pill" data-en="🌀 Rotate the embedding space">🌀 旋转嵌入空间</span>
+      <span class="pill" data-en="🕸️ Drag the disease network">🕸️ 拖动疾病网络</span>
     </div>
     <div class="meta">
       <b>An Interpretable AI Framework Quantifying Traditional Chinese Medicine Principles</b><br>
@@ -398,51 +260,40 @@
   </div>
 </section>
 
-<!-- 核心机制：对比学习实时演化 -->
-<section id="learn">
+<!-- 交互2：辨证论治 -->
+<section id="diagnose">
   <div class="wrap">
-    <div class="eyebrow reveal" data-en="Core mechanism　How contrastive learning &ldquo;grows&rdquo; the map">核心机制　对比学习如何"长出"这张星图</div>
-    <h2 class="reveal d1" data-en="Watch the embedding space<br>self-organise out of chaos.">看嵌入空间,<br>从混沌中自我组织。</h2>
-    <p class="lead reveal d2" data-en="The paper&rsquo;s engine is <b>contrastive learning</b>: matched (symptom-pattern, formula) pairs are <b>pulled together</b>, mismatched ones <b>pushed apart</b>. Below is that process, live — randomly scattered points, driven by a <b>loss function</b>, spontaneously converge into Cold / Heat / Deficiency clusters as the loss curve descends. This is the mathematical foundation that makes the TCM-ES possible.">论文的引擎是<b>对比学习</b>:把"匹配的症状—方药"在空间里<b>拉近</b>、不匹配的<b>推远</b>。下面是这一过程的实时演算——随机散布的点,在<b>损失函数</b>的驱动下自发收敛成寒/热/虚三大簇,损失曲线同步下降。这正是 TCM-ES 得以成立的数学根基。</p>
-    <div class="ln-pipe reveal d2">
-      <div class="lp-box" data-en="Symptoms / Formula<small>high-dim vector x</small>">症状 / 方药<small>高维向量 x</small></div>
-      <div class="lp-arrow">▶</div>
-      <div class="lp-box enc" data-en="Encoder<small>compress</small>">Encoder<small>收缩降维</small></div>
-      <div class="lp-arrow">▶</div>
-      <div class="lp-box z" data-en="Bottleneck z · &ldquo;syndrome&rdquo;<small>low-dim code</small>">瓶颈 z · "证"<small>低维表示</small></div>
-      <div class="lp-arrow">▶</div>
-      <div class="lp-box dec" data-en="Decoder<small>reconstruct</small>">Decoder<small>重建方药</small></div>
-    </div>
-    <div class="demo dark reveal d2">
+    <div class="eyebrow reveal" data-en="Interactive ①　Syndrome differentiation = encode · decode">交互 ①　辨证论治 = 编码 · 解码</div>
+    <h2 class="reveal d1" data-en="Tick symptoms,<br>watch the AI “diagnose” and “prescribe”.">勾选症状,<br>看 AI 自动"辨证"并"开方"。</h2>
+    <p class="lead reveal d2" data-en="Syndromes were <b>deliberately hidden</b> during training, yet the model learned an internal representation that matches them. Here, your selected symptoms are <b>encoded</b> into a point (diagnosis), then the nearest herbs are <b>decoded</b> out (treatment). Try ticking only Cold-syndrome symptoms — the prescription shifts toward warm/hot herbs.">训练时<b>故意隐藏"证型"</b>,模型却自学出与"证"吻合的中间表示。下面:你勾选的症状被<b>编码</b>成空间里一个点(诊断),再<b>解码</b>出最近的草药(治疗)。试试只勾寒证症状,处方会自动偏向温热药。</p>
+    <div class="demo reveal d2">
       <div class="demohead">
-        <div><div class="t" data-en="⚛️ Contrastive learning · live embedding evolution">⚛️ 对比学习 · 嵌入空间实时演化</div><div class="hint" data-en="Random scatter → self-organises into Cold/Heat/Deficiency clusters · loss descends">随机散布 → 自发组织成 寒/热/虚 三簇 · 损失同步下降</div></div>
-        <span class="badge" data-en="Live simulation">实时演算</span>
+        <div><div class="t" data-en="🧪 Syndrome-differentiation simulator">🧪 辨证论治模拟器</div><div class="hint" data-en="Pick symptoms → encode into a “syndrome” → decode a formula">勾选症状 → 编码为"证" → 解码出方药</div></div>
+        <span class="badge" data-en="Interactive">可交互</span>
       </div>
-      <div class="es-stage">
-        <canvas id="cvLearn" height="520"></canvas>
-        <div class="es-legend"><span><i style="background:#39c0ff;color:#39c0ff"></i><span data-en="Cold">寒证</span></span><span><i style="background:#ff6f8b;color:#ff6f8b"></i><span data-en="Heat">热证</span></span><span><i style="background:#ffce5a;color:#ffce5a"></i><span data-en="Deficiency">虚证</span></span></div>
-        <div class="es-hint" id="lnHint" data-en="Training starts automatically when in view…">进入视图即自动开始训练…</div>
-      </div>
-      <div class="ln-foot">
-        <div class="ln-formula" data-en="&#8466; = <span class='pos'>&Sigma;&#8741;z<sub>s</sub>&minus;z<sub>h</sub>&#8741;&sup2;</span> <span class='op'>matched&rarr;attract</span> &nbsp;+&nbsp; &lambda;<span class='neg'>&Sigma;max(0, m&minus;&#8741;z<sub>i</sub>&minus;z<sub>j</sub>&#8741;)&sup2;</span> <span class='op'>mismatched&rarr;repel</span>">&#8466; = <span class="pos">&Sigma;&#8741;z<sub>症</sub>&minus;z<sub>方</sub>&#8741;&sup2;</span> <span class="op">匹配&rarr;拉近</span> &nbsp;+&nbsp; &lambda;<span class="neg">&Sigma;max(0, m&minus;&#8741;z<sub>i</sub>&minus;z<sub>j</sub>&#8741;)&sup2;</span> <span class="op">不匹配&rarr;推远</span></div>
-        <div class="ln-read" data-en="<span>Step <b id='lnEpoch'>0</b></span><span>Loss ℒ <b id='lnLoss'>–</b></span>"><span>训练步 <b id="lnEpoch">0</b></span><span>损失 ℒ <b id="lnLoss">–</b></span></div>
-      </div>
-      <div class="es-toolbar">
-        <button class="es-btn on" id="lnPlay">⏸ 暂停</button>
-        <button class="es-btn" id="lnReset">↺ 打散重来</button>
-        <span class="gl" data-en="Speed">速度</span><input id="lnSpeed" type="range" min="1" max="6" value="2">
-        <span style="flex:1"></span>
-        <span style="color:#7d869a;font-size:12.5px" data-en="Contrastive learning (ref. 37) brings matched symptom–formula pairs close together">对比学习 (ref. 37) 使匹配的症状—方药在空间中相互靠近</span>
+      <div class="m2">
+        <div class="left">
+          <div class="symgroup"><div class="gt" data-en="Cold-syndrome symptoms">寒证相关症状</div><div class="chips" data-grp="cold"></div></div>
+          <div class="symgroup"><div class="gt" data-en="Heat-syndrome symptoms">热证相关症状</div><div class="chips" data-grp="heat"></div></div>
+          <div class="symgroup"><div class="gt" data-en="Deficiency-syndrome symptoms">虚证相关症状</div><div class="chips" data-grp="def"></div></div>
+          <button class="btn sm" id="m2clear" data-en="Clear">清空</button>
+        </div>
+        <div class="right">
+          <div class="canvas-host"><canvas id="cvDiag" height="240"></canvas></div>
+          <div class="verdict">
+            <div class="syn" id="synLabel" data-en="Select symptoms <small>encode → differentiate</small>">请选择症状 <small>编码 → 辨证</small></div>
+            <div class="herblist" id="herbList"></div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="note reveal" data-en="Note: an <b>illustrative simulation</b> of the contrastive mechanism (a force-based contrastive loss: same-syndrome attract + cross-syndrome repel + three-syndrome anchoring), to convey how &ldquo;attract matched, repel mismatched&rdquo; self-organises the space. The original model is a Transformer autoencoder trained with an InfoNCE-style contrastive loss on 84,491 formula records.">说明:此为对比学习机制的<b>示意演算</b>(力学化的对比损失:同证拉近 + 异证推远 + 三证锚定),用于直观呈现"匹配拉近、不匹配推远"如何让空间自组织;原文用 Transformer 自编码器 + InfoNCE 式对比损失在 84,491 条方剂上训练。</div>
   </div>
 </section>
 
 <!-- 交互1：嵌入空间 -->
-<section id="explorer">
+<section id="explorer" style="background:linear-gradient(180deg,#fff,#f5fbf8);">
   <div class="wrap">
-    <div class="eyebrow reveal" data-en="Interactive ①　The TCM embedding space (TCM-ES)">交互 ①　TCM 嵌入空间 (TCM-ES)</div>
+    <div class="eyebrow reveal" data-en="Interactive ②　The TCM embedding space (TCM-ES)">交互 ②　TCM 嵌入空间 (TCM-ES)</div>
     <h2 class="reveal d1" data-en="All of TCM,<br>packed into one rotatable star map.">整个中医,<br>被装进一张可旋转的星图。</h2>
     <p class="lead reveal d2" data-en="The model encodes every symptom, herb and formula as a vector, projected onto the first three principal components. <b>Click any point</b> to reveal its &ldquo;therapeutic neighbours&rdquo; — the paper&rsquo;s key idea: <b>the closer in space, the stronger the therapeutic relationship</b>. The three axes correspond to TCM&rsquo;s Cold, Heat and Deficiency syndromes.">模型把每个症状、草药、方剂编码为向量,投影到前三个主成分。<b>单击任意一个点</b>,展开它在空间中的"治疗近邻"——这正是论文的钥匙:<b>距离越近,治疗关系越强</b>。三条主轴分别对应中医的寒、热、虚三证。</p>
     <div class="demo dark reveal d2">
@@ -480,63 +331,25 @@
   </div>
 </section>
 
-<!-- 交互2：辨证论治 -->
-<section id="diagnose">
+<!-- 交互4：疾病网络 -->
+<section id="network" style="background:linear-gradient(180deg,#fff,#fff7ef);">
   <div class="wrap">
-    <div class="eyebrow reveal" data-en="Interactive ②　Key insight: syndrome differentiation = encode·decode">交互 ②　核心洞见:辨证论治 = 编码·解码</div>
-    <h2 class="reveal d1" data-en="Tick symptoms,<br>watch the AI “diagnose” and “prescribe”.">勾选症状,<br>看 AI 自动"辨证"并"开方"。</h2>
-    <p class="lead reveal d2" data-en="Syndromes were <b>deliberately hidden</b> during training, yet the model learned an internal representation that matches them. Here, your selected symptoms are <b>encoded</b> into a point (diagnosis), then the nearest herbs are <b>decoded</b> out (treatment). Try ticking only Cold-syndrome symptoms — the prescription shifts toward warm/hot herbs.">训练时<b>故意隐藏"证型"</b>,模型却自学出与"证"吻合的中间表示。下面:你勾选的症状被<b>编码</b>成空间里一个点(诊断),再<b>解码</b>出最近的草药(治疗)。试试只勾寒证症状,处方会自动偏向温热药。</p>
+    <div class="eyebrow reveal" data-en="Interactive ③　Hidden disease links from a TCM viewpoint">交互 ③　从中医视角发现疾病的隐藏联系</div>
+    <h2 class="reveal d1" data-en="A draggable disease-relationship network.">一张可拖动的疾病关系网络。</h2>
+    <p class="lead reveal d2" data-en="Edges link 79 diseases by their embedding: <b>grey</b> = known (shared genes/symptoms), <b>red</b> = <b>latent links</b> surfaced from a TCM viewpoint (yet supported by modern biology, e.g. neurodegeneration ↔ retinal degeneration). <b>Drag nodes, click a disease</b> to see its neighbours.">基于嵌入空间为 79 种疾病连边:<b>灰边</b>=已知(共享基因/症状),<b>红边</b>=中医视角发现的<b>潜在联系</b>(却有现代生物学佐证,如神经退行 ↔ 视网膜退行)。<b>拖动节点、点击疾病</b>查看近邻。</p>
     <div class="demo reveal d2">
       <div class="demohead">
-        <div><div class="t" data-en="🧪 Syndrome-differentiation simulator">🧪 辨证论治模拟器</div><div class="hint" data-en="Pick symptoms → encode into a “syndrome” → decode a formula">勾选症状 → 编码为"证" → 解码出方药</div></div>
+        <div><div class="t" data-en="🕸️ Disease-relationship network">🕸️ 疾病关系网络</div><div class="hint" data-en="Drag nodes · click to highlight neighbours · hover to inspect">拖动节点 · 点击高亮近邻 · 悬停查看</div></div>
         <span class="badge" data-en="Interactive">可交互</span>
       </div>
-      <div class="m2">
-        <div class="left">
-          <div class="symgroup"><div class="gt" data-en="Cold-syndrome symptoms">寒证相关症状</div><div class="chips" data-grp="cold"></div></div>
-          <div class="symgroup"><div class="gt" data-en="Heat-syndrome symptoms">热证相关症状</div><div class="chips" data-grp="heat"></div></div>
-          <div class="symgroup"><div class="gt" data-en="Deficiency-syndrome symptoms">虚证相关症状</div><div class="chips" data-grp="def"></div></div>
-          <button class="btn sm" id="m2clear" data-en="Clear">清空</button>
+      <div class="canvas-host"><canvas id="cvNet" height="440"></canvas></div>
+      <div class="ctrls">
+        <div class="legend">
+          <span><span style="display:inline-block;width:18px;height:2px;background:#b9b9be;vertical-align:3px;margin-right:5px;"></span><span data-en="Known link">已知关联</span></span>
+          <span><span style="display:inline-block;width:18px;height:2px;background:#ff3b30;vertical-align:3px;margin-right:5px;"></span><span data-en="Latent link (TCM-found)">潜在关联(TCM 发现)</span></span>
         </div>
-        <div class="right">
-          <div class="canvas-host"><canvas id="cvDiag" height="240"></canvas></div>
-          <div class="verdict">
-            <div class="syn" id="synLabel" data-en="Select symptoms <small>encode → differentiate</small>">请选择症状 <small>编码 → 辨证</small></div>
-            <div class="herblist" id="herbList"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 交互3：方证匹配 → 疗效函数 -->
-<section id="efficacy">
-  <div class="wrap">
-    <div class="eyebrow reveal" data-en="Interactive ③　Formula–syndrome match = a function of distance">交互 ③　方证匹配 = 距离的函数</div>
-    <h2 class="reveal d1" data-en="Drag the formula toward the patient,<br>watch the efficacy curve respond.">拖动处方靠近病情,<br>看疗效曲线实时变化。</h2>
-    <p class="lead reveal d2" data-en="The paper&rsquo;s hardest finding: the <b>closer</b> a patient&rsquo;s condition and the prescribed formula sit in space, the <b>better the efficacy</b> (placebo effect excluded). <b>Drag the orange formula point</b> and the dot on the &ldquo;distance → improvement&rdquo; curve slides with it — a hands-on version of the paper&rsquo;s Fig. 3e.">论文最硬的发现:患者病情与所用方剂在空间中<b>越近,疗效越好</b>(已排除安慰剂效应)。<b>拖动橙色处方点</b>,右侧"距离→改善"函数曲线上的点会随之滑动——这就是论文图 3e 的可手动演绎版。</p>
-    <div class="demo reveal d2">
-      <div class="demohead">
-        <div><div class="t" data-en="📈 Formula–syndrome efficacy">📈 方证匹配疗效演绎</div><div class="hint" data-en="Drag the formula · watch distance vs. efficacy">拖动处方点 · 观察距离与疗效的函数关系</div></div>
-        <span class="badge" data-en="Interactive">可交互</span>
-      </div>
-      <div class="m3">
-        <div class="pl"><div class="canvas-host"><canvas id="cvMatch" height="360"></canvas></div></div>
-        <div class="pr">
-          <div class="readout">
-            <div class="ro"><div class="k" data-en="Embedding distance d">方证嵌入距离 d</div><div class="v" id="roDist">–</div></div>
-            <div class="ro"><div class="k" data-en="Predicted improvement">预测症状改善</div><div class="v" id="roImp">–</div></div>
-          </div>
-          <div class="eq" data-en="improvement ≈ 15 / (1 + (d / 0.42)²)　　<span style='opacity:.7'>(smaller distance → higher efficacy)</span>">改善 ≈ 15 / (1 + (d / 0.42)²)　　<span style="opacity:.7">（距离越小，疗效越高）</span></div>
-          <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;">
-            <button class="btn sm" id="m3snap" data-en="⤺ Align to best match">⤺ 对齐到最佳方证</button>
-            <button class="btn sm" data-pat="cold" data-en="Cold patient">寒证患者</button>
-            <button class="btn sm" data-pat="heat" data-en="Heat patient">热证患者</button>
-            <button class="btn sm" data-pat="def" data-en="Deficiency patient">虚证患者</button>
-          </div>
-          <p class="muted" style="font-size:13px;margin-top:14px;" data-en="Blue square = patient condition, orange diamond = formula. Faint background dots are an illustrative patient cloud reproducing the paper&rsquo;s negative distance–improvement correlation.">蓝色方块为患者病情,橙色菱形为处方。背景浅点为示意患者群,复现了论文中"距离—改善"的负相关云。</p>
-        </div>
+        <span style="flex:1"></span>
+        <button class="btn sm" id="netReset" data-en="Reset layout">重置布局</button>
       </div>
     </div>
   </div>
@@ -563,7 +376,7 @@
 </section>
 
 <!-- 展望 -->
-<section id="future">
+<section id="future" style="background:linear-gradient(180deg,#f5f7ff,#fff);">
   <div class="wrap">
     <div class="eyebrow reveal" data-en="Significance & outlook">意义与展望</div>
     <h2 class="reveal d1" data-en="A quantitative foundation for<br>standardising and modernising TCM.">为中医的标准化与现代化,<br>打下量化地基。</h2>
@@ -610,16 +423,19 @@ const NAT_EN={'热':'Hot','温':'Warm','寒':'Cold','凉':'Cool','平':'Neutral'
 const HERBS=[
  ['吴茱萸',[.9,0,.1],'热',WARM,'Wu-Zhu-Yu'],['高良姜',[.85,0,.15],'热',WARM,'Gao-Liang-Jiang'],['干姜',[.8,0,.2],'热',WARM,'Gan-Jiang'],
  ['附子',[.75,0,.25],'热',WARM,'Fu-Zi'],['肉桂',[.7,0,.3],'温',WARM,'Rou-Gui'],['细辛',[.8,.05,.15],'温',WARM,'Xi-Xin'],['半夏',[.6,.05,.35],'温',WARM,'Ban-Xia'],
+ ['生姜',[.7,0,.3],'温',WARM,'Sheng-Jiang'],['花椒',[.85,0,.15],'热',WARM,'Hua-Jiao'],['小茴香',[.75,0,.25],'温',WARM,'Xiao-Hui-Xiang'],['艾叶',[.7,0,.3],'温',WARM,'Ai-Ye'],
  ['黄芩',[0,.9,.1],'寒',COLD,'Huang-Qin'],['黄连',[0,.92,.08],'寒',COLD,'Huang-Lian'],['石膏',[0,.88,.12],'寒',COLD,'Shi-Gao'],
  ['知母',[0,.8,.2],'寒',COLD,'Zhi-Mu'],['浙贝母',[.05,.8,.15],'凉',COLD,'Zhe-Bei-Mu'],['栀子',[0,.85,.15],'寒',COLD,'Zhi-Zi'],
+ ['大黄',[0,.85,.15],'寒',COLD,'Da-Huang'],['金银花',[.05,.85,.1],'寒',COLD,'Jin-Yin-Hua'],['连翘',[.05,.8,.15],'凉',COLD,'Lian-Qiao'],['黄柏',[0,.9,.1],'寒',COLD,'Huang-Bai'],['龙胆草',[0,.92,.08],'寒',COLD,'Long-Dan-Cao'],['牡丹皮',[.05,.8,.15],'凉',COLD,'Mu-Dan-Pi'],
  ['人参',[.15,0,.85],'平',NEU,'Ren-Shen'],['白术',[.2,0,.8],'温',NEU,'Bai-Zhu'],['茯苓',[.1,.05,.85],'平',NEU,'Fu-Ling'],
  ['甘草',[.1,.1,.8],'平',NEU,'Gan-Cao'],['杜仲',[.2,0,.8],'温',NEU,'Du-Zhong'],['枸杞子',[.05,.15,.8],'平',NEU,'Gou-Qi-Zi'],['当归',[.3,0,.7],'温',NEU,'Dang-Gui'],
+ ['黄芪',[.2,0,.8],'温',NEU,'Huang-Qi'],['熟地黄',[.1,0,.9],'温',NEU,'Shu-Di-Huang'],['山药',[.1,.05,.85],'平',NEU,'Shan-Yao'],['麦冬',[.05,.2,.75],'凉',NEU,'Mai-Dong'],['白芍',[.1,.25,.65],'凉',NEU,'Bai-Shao'],['阿胶',[.1,.05,.85],'平',NEU,'E-Jiao'],
 ].map(h=>({name:h[0],w:h[1],nat:h[2],color:h[3],en:h[4],type:'herb',pos:place(h[1],'h'+h[0])}));
 
 const SYM_RAW={
- cold:[['呕吐',[.8,0,.2],'Vomiting'],['食积',[.75,0,.25],'Food retention'],['畏寒',[.9,0,.1],'Aversion to cold'],['脘腹冷痛',[.85,0,.15],'Cold epigastric pain'],['腹泻',[.6,0,.4],'Diarrhea'],['四肢不温',[.8,0,.2],'Cold limbs']],
- heat:[['咽痛',[0,.85,.15],'Sore throat'],['口干',[0,.8,.2],'Dry mouth'],['发热',[0,.9,.1],'Fever'],['面红',[0,.85,.15],'Flushed face'],['干咳',[.05,.7,.25],'Dry cough']],
- def:[['乏力',[.1,0,.9],'Fatigue'],['气短',[.05,.05,.9],'Short of breath'],['消瘦',[.1,.05,.85],'Emaciation'],['食欲减退',[.2,0,.8],'Poor appetite'],['健忘',[.05,.1,.85],'Forgetfulness'],['腰膝酸软',[.15,0,.85],'Sore back & knees']],
+ cold:[['呕吐',[.8,0,.2],'Vomiting'],['食积',[.75,0,.25],'Food retention'],['畏寒',[.9,0,.1],'Aversion to cold'],['脘腹冷痛',[.85,0,.15],'Cold epigastric pain'],['腹泻',[.6,0,.4],'Diarrhea'],['四肢不温',[.8,0,.2],'Cold limbs'],['喜温热',[.85,0,.15],'Likes warmth'],['大便溏稀',[.7,0,.3],'Loose stool'],['痛经',[.8,0,.2],'Cold menstrual pain']],
+ heat:[['咽痛',[0,.85,.15],'Sore throat'],['口干',[0,.8,.2],'Dry mouth'],['发热',[0,.9,.1],'Fever'],['面红',[0,.85,.15],'Flushed face'],['干咳',[.05,.7,.25],'Dry cough'],['便秘',[.05,.8,.15],'Constipation'],['心烦',[0,.8,.2],'Irritability'],['口苦',[0,.85,.15],'Bitter taste'],['目赤',[0,.85,.15],'Red eyes']],
+ def:[['乏力',[.1,0,.9],'Fatigue'],['气短',[.05,.05,.9],'Short of breath'],['消瘦',[.1,.05,.85],'Emaciation'],['食欲减退',[.2,0,.8],'Poor appetite'],['健忘',[.05,.1,.85],'Forgetfulness'],['腰膝酸软',[.15,0,.85],'Sore back & knees'],['自汗',[.15,.05,.8],'Spontaneous sweating'],['头晕',[.1,.1,.8],'Dizziness'],['心悸',[.1,.15,.75],'Palpitations']],
 };
 const SYM_COLOR={cold:'#16b8c6',heat:'#ff5a8a',def:'#f0a93b'};
 const SYMPTOMS=[];
@@ -628,6 +444,8 @@ Object.keys(SYM_RAW).forEach(g=>SYM_RAW[g].forEach(s=>SYMPTOMS.push({name:s[0],w
 const FORMULAS=[
  ['理中丸',[.78,0,.22],'Li-Zhong-Wan'],['黄连解毒汤',[0,.9,.1],'Huang-Lian-Jie-Du-Tang'],['四君子汤',[.15,0,.85],'Si-Jun-Zi-Tang'],
  ['六味地黄丸',[.12,.12,.76],'Liu-Wei-Di-Huang-Wan'],['独活寄生汤',[.42,0,.58],'Du-Huo-Ji-Sheng-Tang'],['半夏泻心汤',[.45,.4,.15],'Ban-Xia-Xie-Xin-Tang'],
+ ['白虎汤',[0,.9,.1],'Bai-Hu-Tang'],['龙胆泻肝汤',[0,.88,.12],'Long-Dan-Xie-Gan-Tang'],['补中益气汤',[.15,.05,.8],'Bu-Zhong-Yi-Qi-Tang'],['八珍汤',[.2,.05,.75],'Ba-Zhen-Tang'],
+ ['当归补血汤',[.2,.1,.7],'Dang-Gui-Bu-Xue-Tang'],['银翘散',[.05,.8,.15],'Yin-Qiao-San'],['四逆汤',[.85,0,.15],'Si-Ni-Tang'],['玉屏风散',[.2,.05,.75],'Yu-Ping-Feng-San'],
 ].map(f=>({name:f[0],w:f[1],en:f[2],type:'formula',color:'#7b61ff',pos:place(f[1],'f'+f[0])}));
 
 const ALL=[...SYMPTOMS,...HERBS,...FORMULAS];
@@ -652,114 +470,6 @@ function rot3(p,yaw,pitch){
   let y2=y*Math.cos(pitch)-z1*Math.sin(pitch), z2=y*Math.sin(pitch)+z1*Math.cos(pitch);
   return [x1,y2,z2];
 }
-
-/* ============ 核心机制:对比学习实时演化 ============ */
-(function(){
-  const cv=document.getElementById('cvLearn');const ctx=setup(cv);
-  const SYN=['#39c0ff','#ff6f8b','#ffce5a'],SNM=['寒证','热证','虚证'],SNME=['Cold','Heat','Deficiency'];
-  const ANC=[{x:0,y:0.9},{x:-0.82,y:-0.52},{x:0.82,y:-0.52}]; // 三证锚点
-  const ENT=ALL.map(e=>({e,s:e.w.indexOf(Math.max(...e.w))}));
-  const N=ENT.length;
-  // 匹配对(同证，至多3个 j>i)
-  const M=[];
-  for(let i=0;i<N;i++){let c=0;for(let j=i+1;j<N&&c<3;j++){if(ENT[j].s===ENT[i].s){M.push([i,j]);c++;}}}
-  const P=ENT.map(()=>({x:0,y:0})),V=ENT.map(()=>({x:0,y:0}));
-  const KA=0.9,KR=0.02,KB=0.45,DT=0.09,DAMP=0.8,VC=1.8;
-  let running=false,epoch=0,hist=[],speed=2,started=false;
-  function scatter(){for(let i=0;i<N;i++){const a=hash('L'+i)*6.283,r=0.15+hash('Lr'+i)*1.05;
-    P[i].x=Math.cos(a)*r;P[i].y=Math.sin(a)*r;V[i].x=0;V[i].y=0;}epoch=0;hist=[];}
-  scatter();
-  function physics(){
-    const ax=new Float64Array(N),ay=new Float64Array(N);
-    for(const e of M){const i=e[0],j=e[1];const dx=P[j].x-P[i].x,dy=P[j].y-P[i].y;
-      ax[i]+=dx*KA;ay[i]+=dy*KA;ax[j]-=dx*KA;ay[j]-=dy*KA;}
-    for(let i=0;i<N;i++)for(let j=i+1;j<N;j++){const dx=P[i].x-P[j].x,dy=P[i].y-P[j].y;
-      const d2=dx*dx+dy*dy+0.01,len=Math.sqrt(d2),f=KR/d2;
-      ax[i]+=dx/len*f;ay[i]+=dy/len*f;ax[j]-=dx/len*f;ay[j]-=dy/len*f;}
-    for(let i=0;i<N;i++){const a=ANC[ENT[i].s];ax[i]+=(a.x-P[i].x)*KB;ay[i]+=(a.y-P[i].y)*KB;}
-    for(let i=0;i<N;i++){V[i].x=(V[i].x+ax[i]*DT)*DAMP;V[i].y=(V[i].y+ay[i]*DT)*DAMP;
-      V[i].x=Math.max(-VC,Math.min(VC,V[i].x));V[i].y=Math.max(-VC,Math.min(VC,V[i].y));
-      P[i].x+=V[i].x*DT;P[i].y+=V[i].y*DT;}
-  }
-  function lossVal(){let L=0;
-    for(const e of M){const dx=P[e[1]].x-P[e[0]].x,dy=P[e[1]].y-P[e[0]].y;L+=0.5*KA*(dx*dx+dy*dy);}
-    for(let i=0;i<N;i++)for(let j=i+1;j<N;j++){const dx=P[i].x-P[j].x,dy=P[i].y-P[j].y;L+=KR/Math.sqrt(dx*dx+dy*dy+0.01);}
-    for(let i=0;i<N;i++){const a=ANC[ENT[i].s];const dx=a.x-P[i].x,dy=a.y-P[i].y;L+=0.5*KB*(dx*dx+dy*dy);}
-    return L;}
-  let curScale=160;
-  function fitScale(){let mr=0.5;for(let i=0;i<N;i++){const r=Math.hypot(P[i].x,P[i].y);if(r>mr)mr=r;}
-    const fit=Math.min(cv._w*0.40,cv._h*0.44);curScale+=(fit/mr-curScale)*0.10;}
-  function toPx(p){return {x:cv._w/2+p.x*curScale,y:cv._h/2-p.y*curScale};}
-  function bg(){const w=cv._w,h=cv._h;const g=ctx.createRadialGradient(w/2,h*0.45,30,w/2,h*0.5,Math.max(w,h)*0.78);
-    g.addColorStop(0,'#18202f');g.addColorStop(1,'#090d15');ctx.fillStyle=g;ctx.fillRect(0,0,w,h);}
-  function hx(a){return Math.max(0,Math.min(255,Math.round(a))).toString(16).padStart(2,'0');}
-  function draw(){
-    bg();fitScale();
-    // 各证型簇的质心标签(跟随聚类)
-    const cen=[{x:0,y:0,n:0},{x:0,y:0,n:0},{x:0,y:0,n:0}];
-    for(let i=0;i<N;i++){cen[ENT[i].s].x+=P[i].x;cen[ENT[i].s].y+=P[i].y;cen[ENT[i].s].n++;}
-    cen.forEach((c,i)=>{if(!c.n)return;c.x/=c.n;c.y/=c.n;const len=Math.hypot(c.x,c.y)||1;
-      const lp=toPx({x:c.x+c.x/len*0.5,y:c.y+c.y/len*0.5});
-      ctx.font='600 16px sans-serif';const nm=L(SNM[i],SNME[i]);const tw=ctx.measureText(nm).width;
-      ctx.fillStyle='rgba(8,12,20,.55)';
-      if(ctx.roundRect){ctx.beginPath();ctx.roundRect(lp.x-tw/2-7,lp.y-15,tw+14,23,7);ctx.fill();}
-      ctx.fillStyle=SYN[i];ctx.textAlign='center';ctx.fillText(nm,lp.x,lp.y+2);ctx.textAlign='left';});
-    // 匹配连线(淡)
-    ctx.lineWidth=1;
-    for(const e of M){const a=toPx(P[e[0]]),b=toPx(P[e[1]]);
-      ctx.strokeStyle=SYN[ENT[e[0]].s]+'22';ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();}
-    // 点(辉光)
-    for(let i=0;i<N;i++){const p=toPx(P[i]),c=SYN[ENT[i].s],e=ENT[i].e;
-      const R=e.type==='formula'?7:6;
-      const rg=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,R*3);
-      rg.addColorStop(0,c+'aa');rg.addColorStop(0.5,c+'33');rg.addColorStop(1,c+'00');
-      ctx.fillStyle=rg;ctx.beginPath();ctx.arc(p.x,p.y,R*3,0,7);ctx.fill();
-      ctx.fillStyle=c;const r=e.type==='formula'?5:4;
-      if(e.type==='symptom')ctx.fillRect(p.x-r,p.y-r,r*2,r*2);
-      else if(e.type==='formula'){ctx.save();ctx.translate(p.x,p.y);ctx.rotate(.785);ctx.fillRect(-r,-r,r*2,r*2);ctx.restore();}
-      else{ctx.beginPath();ctx.arc(p.x,p.y,r,0,7);ctx.fill();}}
-    drawLoss();
-  }
-  function drawLoss(){
-    const w=cv._w,h=cv._h,cw=Math.min(240,w*0.36),ch=118,ox=w-cw-16,oy=h-ch-16;
-    ctx.fillStyle='rgba(13,18,27,.88)';ctx.strokeStyle='rgba(255,255,255,.12)';
-    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(ox,oy,cw,ch,12);ctx.fill();ctx.stroke();}else{ctx.fillRect(ox,oy,cw,ch);}
-    ctx.fillStyle='#8b93a3';ctx.font='11px sans-serif';ctx.fillText('损失函数 ℒ ↓',ox+12,oy+18);
-    const gx=ox+12,gy=oy+28,gw=cw-24,gh=ch-44;
-    ctx.strokeStyle='rgba(255,255,255,.15)';ctx.beginPath();ctx.moveTo(gx,gy);ctx.lineTo(gx,gy+gh);ctx.lineTo(gx+gw,gy+gh);ctx.stroke();
-    if(hist.length>1){const mx=Math.max(...hist),mn=Math.min(...hist),rng=mx-mn||1;
-      const grd=ctx.createLinearGradient(0,gy,0,gy+gh);grd.addColorStop(0,'#38ef7d');grd.addColorStop(1,'#11998e');
-      ctx.strokeStyle=grd;ctx.lineWidth=2.2;ctx.beginPath();
-      hist.forEach((v,i)=>{const px=gx+i/(hist.length-1)*gw,py=gy+gh-(v-mn)/rng*gh;i?ctx.lineTo(px,py):ctx.moveTo(px,py);});
-      ctx.stroke();
-      const lv=hist[hist.length-1],ly=gy+gh-(lv-mn)/rng*gh,lx=gx+gw;
-      ctx.fillStyle='#38ef7d';ctx.beginPath();ctx.arc(lx,ly,3.5,0,7);ctx.fill();}
-    ctx.fillStyle='rgba(255,255,255,.4)';ctx.font='10px sans-serif';ctx.fillText('训练步 →',gx+gw-44,gy+gh+13);
-  }
-  cv._onresize=draw;
-  const playBtn=document.getElementById('lnPlay'),hintEl=document.getElementById('lnHint');
-  let prevL=0,stable=0;
-  function setRun(r){running=r;playBtn.textContent=r?L('⏸ 暂停','⏸ Pause'):L('▶ 训练','▶ Train');playBtn.classList.toggle('on',r);
-    if(r){hintEl.style.opacity=0;}else{hintEl.style.opacity=1;}}
-  function loop(){
-    if(running){for(let s=0;s<speed;s++)physics();epoch+=speed;
-      const L=lossVal();hist.push(L);if(hist.length>260)hist.shift();
-      document.getElementById('lnEpoch').textContent=epoch;
-      document.getElementById('lnLoss').textContent=L.toFixed(1);
-      if(Math.abs(L-prevL)<0.015)stable++;else stable=0;prevL=L;
-      if(stable>46){setRun(false);hintEl.textContent=L('✓ 已收敛 · 寒/热/虚三簇自组织完成 — 点「打散重来」再演一次','✓ Converged · Cold/Heat/Deficiency clusters self-organised — click “Reset” to replay');hintEl.style.opacity=1;}}
-    draw();requestAnimationFrame(loop);}
-  loop();
-  function startOnce(){if(started)return;started=true;scatter();stable=0;prevL=0;setRun(true);}
-  playBtn.addEventListener('click',()=>{if(!running&&stable>46){scatter();stable=0;prevL=0;}setRun(!running);});
-  document.getElementById('lnReset').addEventListener('click',()=>{scatter();stable=0;prevL=0;setRun(true);});
-  document.getElementById('lnSpeed').addEventListener('input',e=>{speed=+e.target.value;});
-  window.addEventListener('langchange',()=>{setRun(running);document.getElementById('lnReset').textContent=L('↺ 打散重来','↺ Reset');});
-  // 进入视图自动开始(IntersectionObserver + 超时兜底)
-  try{const io2=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting)startOnce();}),{threshold:.3});
-    io2.observe(document.getElementById('learn'));}catch(e){}
-  setTimeout(startOnce,2600);
-})();
 
 /* ============ 交互①:三维嵌入空间(高级暗色星图) ============ */
 (function(){
@@ -991,105 +701,83 @@ function rot3(p,yaw,pitch){
         ctx.lineWidth=i===0?2:1;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(hp.x,hp.y);ctx.stroke();
         ctx.fillStyle=o.h.color;ctx.beginPath();ctx.arc(hp.x,hp.y,i===0?6:5,0,7);ctx.fill();});
       // 证点
-      ctx.fillStyle='#cda05e';ctx.beginPath();ctx.arc(p.x,p.y,7.5,0,7);ctx.fill();
-      ctx.fillStyle='#0a0b0d';ctx.font='600 10px sans-serif';ctx.textAlign='center';ctx.fillText(L('证','z'),p.x,p.y+3.5);ctx.textAlign='left';
+      ctx.fillStyle='#1d1d1f';ctx.beginPath();ctx.arc(p.x,p.y,7,0,7);ctx.fill();
+      ctx.fillStyle='#fff';ctx.font='600 10px sans-serif';ctx.textAlign='center';ctx.fillText(L('证','z'),p.x,p.y+3.5);ctx.textAlign='left';
     }
   }
   cv._onresize=draw;draw();
   window.addEventListener('langchange',()=>{chipEls.forEach(c=>c.textContent=L(c._zh,c._en));update();});
 })();
 
-/* ============ 交互③:方证匹配 → 疗效函数 ============ */
+/* ============ 交互④:疾病关系网络 ============ */
 (function(){
-  const cv=document.getElementById('cvMatch');const ctx=setup(cv);
-  const D0=0.42,IMAX=15;
-  function eff(d){return IMAX/(1+(d/D0)*(d/D0));}
-  // 平面: x:寒(-)→热(+), y:虚(下)→? 用 pos[0],pos[2]? 用 pos 的 x 和 (虚度) ; 简化: 用 w 直接
-  // patient & rx in [-1,1]^2 normalized space
-  let patient={x:-0.45,y:0.5}; // 默认寒虚
-  let rx={x:0.3,y:-0.2};
-  let dragRx=false;
-  // 背景示意患者群
-  const cloud=[];for(let i=0;i<130;i++){const a=hash('c'+i)*6.283,r=0.2+hash('r'+i)*1.0;
-    cloud.push({x:Math.cos(a)*r*0.9,y:Math.sin(a)*r*0.9,j:hash('j'+i)});}
-  function toPx(pt){const pad=34;const w=cv._w-pad*2,h=cv._h-pad*2;
-    return {x:pad+(pt.x+1.3)/2.6*w, y:pad+(1.3-pt.y)/2.6*h};}
-  function dist(){return Math.hypot(patient.x-rx.x,patient.y-rx.y);}
+  const cv=document.getElementById('cvNet');const ctx=setup(cv);
+  // 颜色按 MeSH 大类
+  const CAT={神经:'#7b61ff',视网膜:'#ff8a3d',心血管:'#ff5a7a',神经系统:'#12b3a6',胃肠:'#3a9bff'};
+  const N=[
+    ['肌萎缩侧索硬化','神经','ALS'],['帕金森病','神经',"Parkinson's"],
+    ['黄斑变性','视网膜','Macular degen.'],['视网膜色素变性','视网膜','Retinitis pigm.'],['视网膜退行','视网膜','Retinal degen.'],
+    ['心律失常','心血管','Arrhythmia'],['心肌病','心血管','Cardiomyopathy'],['冠状动脉病','心血管','Coronary art.'],['心肌缺血','心血管','Myocard. isch.'],
+    ['周围神经病','神经系统','Periph. neuropathy'],['小脑共济失调','神经系统','Cerebellar ataxia'],['运动障碍','神经系统','Dyskinesia'],
+    ['溃疡性结肠炎','胃肠','Ulcer. colitis'],['胃肠病','胃肠','GI disease'],
+  ].map((d,i)=>({name:d[0],cat:d[1],en:d[2],color:CAT[d[1]],
+    x:cv._w/2+Math.cos(i)*120+(hash(d[0])-.5)*40, y:cv._h/2+Math.sin(i*1.7)*90+(hash(d[0]+'y')-.5)*40,
+    vx:0,vy:0,pin:false}));
+  const idx={};N.forEach((n,i)=>idx[n.name]=i);
+  // 边: [a,b,latent]
+  const E=[
+    ['肌萎缩侧索硬化','帕金森病',false],['黄斑变性','视网膜色素变性',false],['黄斑变性','视网膜退行',false],
+    ['视网膜色素变性','视网膜退行',false],['心律失常','心肌病',false],['心肌病','冠状动脉病',false],
+    ['冠状动脉病','心肌缺血',false],['心律失常','心肌缺血',false],['周围神经病','小脑共济失调',false],
+    ['小脑共济失调','运动障碍',false],['周围神经病','运动障碍',false],['溃疡性结肠炎','胃肠病',false],
+    // 潜在(红)
+    ['肌萎缩侧索硬化','黄斑变性',true],['帕金森病','视网膜退行',true],
+    ['心律失常','周围神经病',true],['心肌病','小脑共济失调',true],['运动障碍','帕金森病',true],
+  ].map(e=>({a:idx[e[0]],b:idx[e[1]],latent:e[2]}));
+  let hover=-1,sel=-1,dragI=-1;
+  function step(){
+    for(let i=0;i<N.length;i++){for(let j=i+1;j<N.length;j++){
+      const a=N[i],b=N[j];let dx=a.x-b.x,dy=a.y-b.y;let d=Math.hypot(dx,dy)||1;
+      const f=2400/(d*d);dx/=d;dy/=d;a.vx+=dx*f;a.vy+=dy*f;b.vx-=dx*f;b.vy-=dy*f;}}
+    E.forEach(e=>{const a=N[e.a],b=N[e.b];let dx=b.x-a.x,dy=b.y-a.y;let d=Math.hypot(dx,dy)||1;
+      const f=(d-95)*0.012;dx/=d;dy/=d;a.vx+=dx*f;a.vy+=dy*f;b.vx-=dx*f;b.vy-=dy*f;});
+    const cx=cv._w/2,cy=cv._h/2;
+    N.forEach((n,i)=>{n.vx+=(cx-n.x)*0.002;n.vy+=(cy-n.y)*0.002;
+      if(i===dragI||n.pin)return;n.vx*=0.82;n.vy*=0.82;n.x+=n.vx;n.y+=n.vy;
+      n.x=Math.max(40,Math.min(cv._w-40,n.x));n.y=Math.max(30,Math.min(cv._h-30,n.y));});
+  }
   function draw(){
     const w=cv._w,h=cv._h;ctx.clearRect(0,0,w,h);
-    // 区域标签
-    ctx.font='12px sans-serif';ctx.fillStyle='rgba(58,155,255,.55)';ctx.fillText(L('寒','Cold'),toPx({x:-1.12,y:0}).x,toPx({x:-1.12,y:0}).y);
-    ctx.fillStyle='rgba(255,90,97,.6)';ctx.fillText(L('热','Heat'),toPx({x:1.08,y:0}).x,toPx({x:1.08,y:0}).y);
-    ctx.fillStyle='rgba(240,169,59,.7)';ctx.fillText(L('虚','Def.'),toPx({x:0,y:1.1}).x-4,toPx({x:0,y:1.1}).y);
-    // 云
-    cloud.forEach(c=>{const p=toPx(c);ctx.globalAlpha=.22;ctx.fillStyle='#5a78b4';
-      ctx.beginPath();ctx.arc(p.x,p.y,2.5,0,7);ctx.fill();});
+    E.forEach(e=>{const a=N[e.a],b=N[e.b];
+      const act=sel>=0&&(e.a===sel||e.b===sel);
+      ctx.strokeStyle=e.latent?(act?'#ff3b30':'rgba(255,59,48,.5)'):(act?'#8a8a8e':'rgba(185,185,190,.55)');
+      ctx.lineWidth=e.latent?(act?2.4:1.6):(act?2:1);
+      ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();});
+    N.forEach((n,i)=>{
+      const act=sel<0||i===sel|| E.some(e=>(e.a===sel&&e.b===i)||(e.b===sel&&e.a===i));
+      ctx.globalAlpha=act?1:0.3;
+      ctx.fillStyle=n.color;ctx.beginPath();ctx.arc(n.x,n.y,i===hover||i===sel?11:8,0,7);ctx.fill();
+      if(i===sel){ctx.strokeStyle='#1d1d1f';ctx.lineWidth=2;ctx.stroke();}
+      ctx.globalAlpha=act?1:0.45;
+      ctx.fillStyle='#1d1d1f';ctx.font=(i===hover||i===sel?'600 ':'')+'12px sans-serif';
+      ctx.textAlign='center';ctx.fillText(L(n.name,n.en),n.x,n.y-13);ctx.textAlign='left';
+    });
     ctx.globalAlpha=1;
-    const pp=toPx(patient),pr=toPx(rx);
-    // 连线
-    ctx.strokeStyle='rgba(205,160,94,.85)';ctx.lineWidth=2;ctx.setLineDash([5,4]);
-    ctx.beginPath();ctx.moveTo(pp.x,pp.y);ctx.lineTo(pr.x,pr.y);ctx.stroke();ctx.setLineDash([]);
-    // 距离标签
-    const mid={x:(pp.x+pr.x)/2,y:(pp.y+pr.y)/2};
-    ctx.fillStyle='#cda05e';ctx.font='600 12px sans-serif';ctx.fillText('d='+dist().toFixed(2),mid.x+6,mid.y-6);
-    // 患者
-    ctx.fillStyle='#4aa8ff';ctx.fillRect(pp.x-9,pp.y-9,18,18);
-    ctx.fillStyle='#06080c';ctx.font='600 11px sans-serif';ctx.textAlign='center';ctx.fillText(L('病','Pt'),pp.x,pp.y+4);
-    // 处方
-    ctx.save();ctx.translate(pr.x,pr.y);ctx.rotate(Math.PI/4);ctx.fillStyle='#cda05e';ctx.fillRect(-10,-10,20,20);ctx.restore();
-    ctx.fillStyle='#0a0b0d';ctx.fillText(L('方','Rx'),pr.x,pr.y+4);ctx.textAlign='left';
-    // 提示
-    ctx.fillStyle='rgba(226,231,241,.4)';ctx.font='12px sans-serif';ctx.fillText(L('← 拖动处方点','← drag the formula'),pr.x+18,pr.y+4);
-    drawCurve();
   }
-  // 右侧小函数图(画在主canvas右上角内嵌? 用独立绘制在右侧 readout 通过DOM). 这里改为在主图右下角画曲线缩略
-  function drawCurve(){
-    const w=cv._w,h=cv._h;const cw=Math.min(190,w*0.42),ch=92;
-    const ox=w-cw-14,oy=h-ch-14;
-    ctx.fillStyle='rgba(12,14,17,.92)';ctx.strokeStyle='rgba(226,231,241,.14)';
-    if(ctx.roundRect){ctx.beginPath();ctx.roundRect(ox,oy,cw,ch,8);ctx.fill();ctx.stroke();}
-    else{ctx.fillRect(ox,oy,cw,ch);ctx.strokeRect(ox,oy,cw,ch);}
-    const pad=10;const gx=ox+pad,gy=oy+pad,gw=cw-pad*2,gh=ch-pad*2-8;
-    // 轴
-    ctx.strokeStyle='rgba(226,231,241,.2)';ctx.beginPath();ctx.moveTo(gx,gy);ctx.lineTo(gx,gy+gh);ctx.lineTo(gx+gw,gy+gh);ctx.stroke();
-    // 曲线 d:0..1.4
-    ctx.strokeStyle='#36cf86';ctx.lineWidth=2;ctx.beginPath();
-    for(let i=0;i<=40;i++){const d=i/40*1.4;const yv=eff(d)/IMAX;
-      const px=gx+(d/1.4)*gw, py=gy+gh-yv*gh;if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);}
-    ctx.stroke();
-    // 当前点
-    const d=Math.min(dist(),1.4);const yv=eff(d)/IMAX;
-    const px=gx+(d/1.4)*gw,py=gy+gh-yv*gh;
-    ctx.fillStyle='#cda05e';ctx.beginPath();ctx.arc(px,py,4.5,0,7);ctx.fill();
-    ctx.strokeStyle='rgba(205,160,94,.45)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(px,gy+gh);ctx.lineTo(px,py);ctx.stroke();
-    ctx.fillStyle='rgba(226,231,241,.42)';ctx.font='10px sans-serif';ctx.fillText(L('距离','dist.'),gx+gw-28,gy+gh+9);ctx.fillText(L('改善','impr.'),gx-2,gy-2);
-  }
-  function refresh(){
-    document.getElementById('roDist').textContent=dist().toFixed(2);
-    document.getElementById('roImp').textContent=eff(dist()).toFixed(1);
-    draw();
-  }
-  cv._onresize=refresh;
+  function loop(){step();draw();requestAnimationFrame(loop);}
+  // 预热
+  for(let k=0;k<120;k++)step();
+  loop();cv._onresize=()=>{};
   function pos(ev){const r=cv.getBoundingClientRect();const t=ev.touches?ev.touches[0]:ev;return {x:t.clientX-r.left,y:t.clientY-r.top};}
-  function nearRx(p){const pr=toPx(rx);return Math.hypot(pr.x-p.x,pr.y-p.y)<22;}
-  cv.addEventListener('pointerdown',e=>{const p=pos(e);if(nearRx(p)){dragRx=true;cv.setPointerCapture(e.pointerId);}});
+  function pick(p){let best=-1,bd=16;N.forEach((n,i)=>{const d=Math.hypot(n.x-p.x,n.y-p.y);if(d<bd){bd=d;best=i;}});return best;}
+  cv.addEventListener('pointerdown',e=>{const p=pos(e);const i=pick(p);if(i>=0){dragI=i;N[i].pin=true;sel=(sel===i?-1:i);cv.setPointerCapture(e.pointerId);}else{sel=-1;}});
   cv.addEventListener('pointermove',e=>{const p=pos(e);
-    if(dragRx){const pad=34,w=cv._w-pad*2,h=cv._h-pad*2;
-      rx.x=Math.max(-1.25,Math.min(1.25,(p.x-pad)/w*2.6-1.3));
-      rx.y=Math.max(-1.25,Math.min(1.25,1.3-(p.y-pad)/h*2.6));refresh();}
-    else{cv.style.cursor=nearRx(p)?'grab':'default';}});
-  cv.addEventListener('pointerup',()=>dragRx=false);
-  // 对齐动画
-  document.getElementById('m3snap').addEventListener('click',()=>{
-    const t={x:patient.x,y:patient.y};const s={x:rx.x,y:rx.y};let k=0;
-    (function an(){k+=0.06;rx.x=s.x+(t.x-s.x)*k;rx.y=s.y+(t.y-s.y)*k;refresh();if(k<1)requestAnimationFrame(an);})();
-  });
-  document.querySelectorAll('[data-pat]').forEach(b=>b.addEventListener('click',()=>{
-    const m=b.dataset.pat;
-    patient = m==='cold'?{x:-0.55,y:-0.1}: m==='heat'?{x:0.6,y:-0.1}:{x:-0.05,y:0.7};
-    refresh();
-  }));
-  refresh();
+    if(dragI>=0){N[dragI].x=p.x;N[dragI].y=p.y;N[dragI].vx=0;N[dragI].vy=0;}
+    else{const i=pick(p);hover=i;cv.style.cursor=i>=0?'pointer':'default';}});
+  cv.addEventListener('pointerup',()=>{if(dragI>=0)N[dragI].pin=false;dragI=-1;});
+  cv.addEventListener('pointerleave',()=>{hover=-1;});
+  document.getElementById('netReset').addEventListener('click',()=>{
+    N.forEach((n,i)=>{n.x=cv._w/2+Math.cos(i)*120;n.y=cv._h/2+Math.sin(i*1.7)*90;n.vx=0;n.vy=0;n.pin=false;});sel=-1;});
 })();
 
 /* ============ 双语:语言切换控制器 ============ */
